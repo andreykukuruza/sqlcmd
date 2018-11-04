@@ -1,17 +1,19 @@
 package model;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public interface DatabaseManager {
     boolean isConnected();
 
-    void connect(String databaseName, String username, String password) throws Exception;
+    void connect(String databaseName, String username, String password) throws SQLException;
 
-    HashSet<String> tables() throws Exception;
+    HashSet<String> tables() throws SQLException;
 
-    void clear(String tableName) throws Exception;
+    void clear(String tableName) throws SQLException;
 
-    void exit() throws Exception;
+    void exit() throws SQLException;
 
     void delete(String command);
 
@@ -21,7 +23,7 @@ public interface DatabaseManager {
 
     void find(String command);
 
-    void create(String command);
+    void create(String tableName, ArrayList<String> namesAndTypesOfColumns);
 
     void drop(String command);
 }

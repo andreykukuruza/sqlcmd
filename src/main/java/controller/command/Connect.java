@@ -3,6 +3,8 @@ package controller.command;
 import model.DatabaseManager;
 import view.View;
 
+import java.sql.SQLException;
+
 public class Connect implements Command {
     private static final int NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
     private View view;
@@ -26,7 +28,7 @@ public class Connect implements Command {
             try {
                 manager.connect(formatCommand[1], formatCommand[2], formatCommand[3]);
                 view.write("Connect is successful. Enter next command or help:");
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 view.write(e.getMessage());
                 view.write("Enter next command or help:");
             }

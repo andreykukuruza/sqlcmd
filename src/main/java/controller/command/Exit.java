@@ -3,6 +3,8 @@ package controller.command;
 import model.DatabaseManager;
 import view.View;
 
+import java.sql.SQLException;
+
 public class Exit implements Command {
     private View view;
     private DatabaseManager manager;
@@ -22,7 +24,7 @@ public class Exit implements Command {
         try {
             manager.exit();
             view.write("Goodbye!");
-        } catch (Exception e) {
+        } catch (SQLException e) {
             view.write(e.getMessage() + " Goodbye!");
         }
     }

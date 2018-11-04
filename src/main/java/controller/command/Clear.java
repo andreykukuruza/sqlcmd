@@ -3,6 +3,8 @@ package controller.command;
 import model.DatabaseManager;
 import view.View;
 
+import java.sql.SQLException;
+
 public class Clear implements Command {
     private static final int NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
     private View view;
@@ -27,7 +29,7 @@ public class Clear implements Command {
             try {
                 manager.clear(tableName);
                 view.write("Table " + tableName + " was cleared. Enter next command or help:");
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 view.write(e.getMessage());
                 view.write("Enter next command or help:");
             }

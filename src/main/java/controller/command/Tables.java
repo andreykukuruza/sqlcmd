@@ -3,6 +3,7 @@ package controller.command;
 import model.DatabaseManager;
 import view.View;
 
+import java.sql.SQLException;
 import java.util.HashSet;
 
 public class Tables implements Command {
@@ -30,7 +31,7 @@ public class Tables implements Command {
                 view.write(tableNames.toString());
                 view.write("Enter next command or help:");
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             view.write(e.getMessage());
             view.write("Enter next command or help:");
         }
