@@ -24,7 +24,7 @@ public class Create implements Command {
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
 
-        if (formatCommand.length >= MIN_NUMBER_OF_PARAMETERS_IN_COMMAND && isCorrectNumberOfParameters(formatCommand)) {
+        if (isCorrectNumberOfParameters(formatCommand)) {
             String tableName = formatCommand[1];
             ArrayList<String> namesAndTypesOfColumns = new ArrayList<>();
 
@@ -38,7 +38,7 @@ public class Create implements Command {
     }
 
     private boolean isCorrectNumberOfParameters(String[] formatCommand) {
-        return formatCommand.length % 2 == 0;
+        return formatCommand.length >= MIN_NUMBER_OF_PARAMETERS_IN_COMMAND && formatCommand.length % 2 == 0;
     }
 }
 //    String sql = "CREATE TABLE public." + tableName + "(";
