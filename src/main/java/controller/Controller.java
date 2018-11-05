@@ -16,6 +16,7 @@ public class Controller {
                 new Help(view),
                 new IsConnected(view, manager),
                 new Tables(view, manager),
+                new Drop(view, manager),
                 new Create(view, manager),
                 new Clear(view, manager),
                 new Unsupported(view)
@@ -35,6 +36,6 @@ public class Controller {
             }
             inputCommand = view.read();
         }
-        commands[1].execute("exit"); //Следить за индексом комманды exit в массиве!!!
+        commands[1].execute("exit"); //Следить за индексом комманды exit в массиве Command[]!!!
     }
 }

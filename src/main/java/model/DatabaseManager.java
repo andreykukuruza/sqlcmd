@@ -1,8 +1,8 @@
 package model;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public interface DatabaseManager {
     boolean isConnected();
@@ -23,7 +23,7 @@ public interface DatabaseManager {
 
     void find(String command);
 
-    void create(String tableName, ArrayList<String> namesAndTypesOfColumns);
+    void create(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) throws SQLException;
 
-    void drop(String command);
+    void drop(String tableName) throws SQLException;
 }

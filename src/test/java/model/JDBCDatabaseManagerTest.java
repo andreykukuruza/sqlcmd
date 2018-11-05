@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JDBCDatabaseManagerTest {
     private JDBCDatabaseManager manager;
-    private static String correctDatabaseName = "sqlcmdDB";
-    private static String correctUserName = "postgres";
-    private static String correctPassword = "sup3r42pass";
+    private String correctDatabaseName = "sqlcmdDB";
+    private String correctUserName = "postgres";
+    private String correctPassword = "sup3r42pass";
 
     @BeforeEach
     public void setUp() {

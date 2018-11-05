@@ -30,10 +30,10 @@ public class Connect implements Command {
                 view.write("Connect is successful. Enter next command or help:");
             } catch (SQLException e) {
                 view.write(e.getMessage());
-                view.write("Enter next command or help:");
+                view.write(CommandMessages.ENTER_NEXT_COMMAND);
             }
         } else {
-            view.write("Incorrect command format. Try again or enter help:");
+            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
         }
     }
 }

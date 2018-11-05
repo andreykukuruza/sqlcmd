@@ -3,7 +3,9 @@ package controller.command;
 import model.DatabaseManager;
 import view.View;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Create implements Command {
     private static final int MIN_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
@@ -26,26 +28,38 @@ public class Create implements Command {
 
         if (isCorrectNumberOfParameters(formatCommand)) {
             String tableName = formatCommand[1];
-            ArrayList<String> namesAndTypesOfColumns = new ArrayList<>();
+            List<String> namesOfColumns = getNamesOfColumns(formatCommand);
+            List<String> typesOfColumns = getTypesOfColumns(formatCommand);
 
-            for (int i = 2; i < formatCommand.length; i++) {
-                namesAndTypesOfColumns.add(formatCommand[i]);
+            try {
+                manager.create(tableName, namesOfColumns, typesOfColumns);
+                view.write("Table " + tableName + " was created. Enter next command or help:");
+            } catch (SQLException e) {
+                view.write(e.getMessage());
+                view.write(CommandMessages.ENTER_NEXT_COMMAND);
             }
-            manager.create(tableName, namesAndTypesOfColumns);
         } else {
-            view.write("Incorrect command format. Try again or enter help:");
+            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
         }
+    }
+
+    private ArrayList<String> getTypesOfColumns(String[] formatCommand) {
+        ArrayList<String> typesOfColumns = new ArrayList<>();
+        for (int i = 3; i < formatCommand.length; i += 2) {
+            typesOfColumns.add(formatCommand[i]);
+        }
+        return typesOfColumns;
+    }
+
+    private ArrayList<String> getNamesOfColumns(String[] formatCommand) {
+        ArrayList<String> namesOfColumns = new ArrayList<>();
+        for (int i = 2; i < formatCommand.length; i += 2) {
+            namesOfColumns.add(formatCommand[i]);
+        }
+        return namesOfColumns;
     }
 
     private boolean isCorrectNumberOfParameters(String[] formatCommand) {
         return formatCommand.length >= MIN_NUMBER_OF_PARAMETERS_IN_COMMAND && formatCommand.length % 2 == 0;
     }
 }
-//    String sql = "CREATE TABLE public." + tableName + "(";
-//
-//        String sql = "CREATE TABLE public.COMPANY " +
-//                "(ID INT PRIMARY KEY     NOT NULL," +
-//                " NAME           TEXT    NOT NULL, " +
-//                " AGE            INT     NOT NULL, " +
-//                " ADDRESS        CHAR(50), " +
-//                " SALARY         REAL);";

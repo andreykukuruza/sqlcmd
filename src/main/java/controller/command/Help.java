@@ -40,8 +40,10 @@ public class Help implements Command {
 
         view.write("\t- create");
         view.write("\t\tYou can use it for creating the table with any number of columns.");
-        view.write("\t\tFormat: create|column 1|column 2|...|column N");
+        view.write("\t\tFormat: create|table Name|column 1|type 1|column 2|type 2|...|column N|type N");
+        view.write("\t\t\"table Name\" - name of new table.");
         view.write("\t\t\"column 1|column 2|...|column N\" - names of columns in new table.");
+        view.write("\t\t\"type 1|type 2|...|type N\" - data types of columns in new table.");
         view.write("");
 
         view.write("\t- find");
@@ -66,11 +68,13 @@ public class Help implements Command {
         view.write("");
 
         view.write("\t- help");
-        view.write("\t\tTODO");
+        view.write("\t\tYou can use it for watching all commands and their describes in SQLCmd.");
+        view.write("\t\tFormat: help");
         view.write("");
 
         view.write("\t- exit");
-        view.write("\t\tTODO");
+        view.write("\t\tYou can use it for correct exiting from SQLCmd.");
+        view.write("\t\tFormat: exit");
         view.write("");
 
         view.write("Enter next command:");
