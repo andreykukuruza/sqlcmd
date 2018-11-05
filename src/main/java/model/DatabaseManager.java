@@ -1,7 +1,6 @@
 package model;
 
 import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.List;
 
 public interface DatabaseManager {
@@ -9,7 +8,7 @@ public interface DatabaseManager {
 
     void connect(String databaseName, String username, String password) throws SQLException;
 
-    HashSet<String> tables() throws SQLException;
+    List<String> tables() throws SQLException;
 
     void clear(String tableName) throws SQLException;
 

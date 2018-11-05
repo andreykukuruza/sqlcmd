@@ -2,7 +2,6 @@ package model;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class JDBCDatabaseManager implements DatabaseManager {
@@ -43,12 +42,12 @@ public class JDBCDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public HashSet<String> tables() throws SQLException {
+    public ArrayList<String> tables() throws SQLException {
         if (isConnected()) {
             String sql = "SELECT table_name FROM information_schema.tables\n" +
                     "WHERE table_schema NOT IN ('information_schema', 'pg_catalog')\n" +
                     "AND table_schema IN('public');";
-            HashSet<String> tableNames = new HashSet<>();
+            ArrayList<String> tableNames = new ArrayList<>();
 
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(sql)) {
