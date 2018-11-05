@@ -26,14 +26,14 @@ public class Tables implements Command {
             HashSet<String> tableNames = manager.tables();
             if (tableNames.size() == 0) {
                 view.write("No tables inside this database.");
-                view.write("Enter next command or help:");
+                view.write(CommandMessages.ENTER_NEXT_COMMAND);
             } else {
                 view.write(tableNames.toString());
-                view.write("Enter next command or help:");
+                view.write(CommandMessages.ENTER_NEXT_COMMAND);
             }
         } catch (SQLException e) {
             view.write(e.getMessage());
-            view.write("Enter next command or help:");
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
     }
 }
