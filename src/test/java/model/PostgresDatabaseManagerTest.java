@@ -8,15 +8,15 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JDBCDatabaseManagerTest {
-    private JDBCDatabaseManager manager;
+public class PostgresDatabaseManagerTest {
+    private PostgresDatabaseManager manager;
     private String correctDatabaseName = "sqlcmdDB";
     private String correctUserName = "postgres";
     private String correctPassword = "sup3r42pass";
 
     @BeforeEach
     public void setUp() {
-        manager = new JDBCDatabaseManager();
+        manager = new PostgresDatabaseManager();
     }
 
     @AfterEach

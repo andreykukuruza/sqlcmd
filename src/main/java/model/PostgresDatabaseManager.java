@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBCDatabaseManager implements DatabaseManager {
+public class PostgresDatabaseManager implements DatabaseManager {
     private Connection connection;
     private String youAreNotConnectedToDatabaseErrorMessage = "You are not connected to database.";
 
