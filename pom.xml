@@ -21,5 +21,11 @@
             <version>5.3.1</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.ow2.sirocco</groupId>
+            <artifactId>sirocco-text-table-formatter</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>
