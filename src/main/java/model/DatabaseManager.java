@@ -19,7 +19,7 @@ public interface DatabaseManager {
 
     void update(String command);
 
-    void insert(String command);
+    void insert(String tableName, List<String> columnNames, List<String> columnValues) throws SQLException;
 
     List<String> getTableData(String tableName) throws SQLException;
 

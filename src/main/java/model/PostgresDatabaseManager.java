@@ -96,8 +96,41 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void insert(String command) {
+    public void insert(String tableName, List<String> columnNames, List<String> columnValues) throws SQLException {
+        if (columnNames.size() != columnValues.size()) {
+            throw new IllegalArgumentException("Can not create new table with difference number of column names and column types.");
+        }
 
+        throwExceptionIfNotConnected();
+
+        try (Statement statement = connection.createStatement()) {
+            String sql = getSQLForInsertDataInTable(tableName, columnNames, columnValues);
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            if (e.getMessage().contains("of relation") && e.getMessage().contains(" does not exist")) {
+                throw new SQLException("One or more columns does not exist. Check name of columns.", e);
+            } else if (e.getMessage().contains("ERROR: column ") && e.getMessage().contains(" does not exist")) {
+                throw new SQLException("You need to use special symbol ' around your text values.", e);
+            } else if (e.getMessage().equals("ERROR: relation \"" + tableName + "\" does not exist\n" + "  Позиция: 13")) {
+                throw new SQLException("Table " + tableName + " does not exist.", e);
+            } else if (e.getMessage().startsWith("ERROR: invalid input syntax for integer:") || e.getMessage().startsWith("Unterminated string literal") || e.getMessage().startsWith("Unterminated identifier")) {
+                throw new SQLException("Something wrong with syntax or incompatible data types.", e);
+            }
+            throw e;
+        }
+    }
+
+    private String getSQLForInsertDataInTable(String tableName, List<String> columnNames, List<String> columnValues) {
+        StringBuilder sql = new StringBuilder("INSERT INTO " + tableName + " (");
+        for (int i = 0; i < columnNames.size() - 1; i++) {
+            sql.append(columnNames.get(i)).append(", ");
+        }
+        sql.append(columnNames.get(columnNames.size() - 1)).append(") VALUES (");
+        for (int i = 0; i < columnValues.size() - 1; i++) {
+            sql.append(columnValues.get(i)).append(", ");
+        }
+        sql.append(columnValues.get(columnValues.size() - 1)).append(");");
+        return sql.toString();
     }
 
     @Override
@@ -176,16 +209,16 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     private String getSQLForCreatingNewTable(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) {
-        String sql = "CREATE TABLE public." + tableName + " (";
+        StringBuilder sql = new StringBuilder("CREATE TABLE public." + tableName + " (");
 
         if (namesOfColumns.size() != 0) {
             for (int i = 0; i < namesOfColumns.size() - 1; i++) {
-                sql += namesOfColumns.get(i) + " " + typesOfColumns.get(i) + ", ";
+                sql.append(namesOfColumns.get(i)).append(" ").append(typesOfColumns.get(i)).append(", ");
             }
-            sql += namesOfColumns.get(namesOfColumns.size() - 1) + " " + typesOfColumns.get(typesOfColumns.size() - 1);
+            sql.append(namesOfColumns.get(namesOfColumns.size() - 1)).append(" ").append(typesOfColumns.get(typesOfColumns.size() - 1));
         }
-        sql += ");";
-        return sql;
+        sql.append(");");
+        return sql.toString();
     }
 
     @Override

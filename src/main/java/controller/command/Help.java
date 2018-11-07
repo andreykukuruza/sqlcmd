@@ -54,9 +54,11 @@ public class Help implements Command {
         view.write("\t- insert");
         view.write("\t\tYou can use it for insert the row in the table.");
         view.write("\t\tFormat: insert|table name|column 1|value 1|column 2|value 2|...|column N|value N");
-        view.write("\t\t\"column 1\" - name of first column, \"value 1\" - value of first column");
-        view.write("\t\t\"column 2\" - name of second column, \"value 2\" - value of second column");
-        view.write("\t\t\"column N\" - name of N column, \"value N\" - value of N column");
+        view.write("\t\t\"column 1\" - name of the first column, \"value 1\" - value of the first column");
+        view.write("\t\t\"column 2\" - name of the second column, \"value 2\" - value of the second column");
+        view.write("\t\t\"column N\" - name of the N column, \"value N\" - value of the N column");
+        view.write("\t\tP.S. If one or more of your values are text, you need use special symbol '.");
+        view.write("\t\tExample, insert|users|name|'some text'|password|'another text'");
         view.write("");
 //      TODO To finish "help" command
         view.write("\t- update");

@@ -19,6 +19,7 @@ public class Controller {
                 new Find(view, manager),
                 new Drop(view, manager),
                 new Create(view, manager),
+                new Insert(view, manager),
                 new Clear(view, manager),
                 new Unsupported(view)
                 /*TODO Init array of all commands. Последовательность имеет значение.
