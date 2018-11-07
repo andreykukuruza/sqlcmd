@@ -2,6 +2,7 @@ package model;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 public interface DatabaseManager {
     boolean isConnected();
@@ -20,7 +21,9 @@ public interface DatabaseManager {
 
     void insert(String command);
 
-    void find(String command);
+    List<String> getTableData(String tableName) throws SQLException;
+
+    Set<String> getColumnNamesInTable(String tableName) throws SQLException;
 
     void create(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) throws SQLException;
 
