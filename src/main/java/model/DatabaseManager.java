@@ -17,7 +17,7 @@ public interface DatabaseManager {
 
     void delete(String command);
 
-    void update(String command);
+    void update(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn, List<String> namesOfUpdatableColumns, List<String> valuesOfUpdatableColumns) throws SQLException;
 
     void insert(String tableName, List<String> columnNames, List<String> columnValues) throws SQLException;
 

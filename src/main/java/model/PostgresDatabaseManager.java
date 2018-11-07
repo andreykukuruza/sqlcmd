@@ -5,17 +5,7 @@ import java.util.*;
 
 public class PostgresDatabaseManager implements DatabaseManager {
     private Connection connection;
-    private String youAreNotConnectedToDatabaseErrorMessage = "You are not connected to database.";
-
-    private void closeIfWasConnected() throws SQLException {
-        if (isConnected()) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new SQLException("Previous connection was not close. Try again or reset SQLCmd.", e);
-            }
-        }
-    }
+    private String inputDataDoesNotCorrectErrorMessage = "Input data does not correct.";
 
     @Override
     public boolean isConnected() {
@@ -35,7 +25,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
             } else if (e.getMessage().equals("FATAL: database \"" + databaseName + "\" does not exist")) {
                 throw new SQLException("Database " + databaseName + " does not exist.", e);
             } else {
-                throw e;
+                throw new SQLException("Houston, we have a problem!...", e);
             }
         }
     }
@@ -69,7 +59,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
             if (e.getMessage().equals("ERROR: relation \"" + tableName + "\" does not exist\n" + "  Позиция: 13")) {
                 throw new SQLException("Table " + tableName + " does not exist.", e);
             } else {
-                throw e;
+                throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
             }
         }
     }
@@ -91,46 +81,30 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void update(String command) {
+    public void update(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn, List<String> namesOfUpdatableColumns, List<String> valuesOfUpdatableColumns) throws SQLException {
+        throwExceptionIfSizesOfListsNotEqual(namesOfUpdatableColumns, valuesOfUpdatableColumns);
+        throwExceptionIfNotConnected();
 
+        try (Statement statement = connection.createStatement()) {
+            String sql = getSQLForUpdatingData(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn, namesOfUpdatableColumns, valuesOfUpdatableColumns);
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
+        }
     }
+
 
     @Override
     public void insert(String tableName, List<String> columnNames, List<String> columnValues) throws SQLException {
-        if (columnNames.size() != columnValues.size()) {
-            throw new IllegalArgumentException("Can not create new table with difference number of column names and column types.");
-        }
-
+        throwExceptionIfSizesOfListsNotEqual(columnNames, columnValues);
         throwExceptionIfNotConnected();
 
         try (Statement statement = connection.createStatement()) {
             String sql = getSQLForInsertDataInTable(tableName, columnNames, columnValues);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            if (e.getMessage().contains("of relation") && e.getMessage().contains(" does not exist")) {
-                throw new SQLException("One or more columns does not exist. Check name of columns.", e);
-            } else if (e.getMessage().contains("ERROR: column ") && e.getMessage().contains(" does not exist")) {
-                throw new SQLException("You need to use special symbol ' around your text values.", e);
-            } else if (e.getMessage().equals("ERROR: relation \"" + tableName + "\" does not exist\n" + "  Позиция: 13")) {
-                throw new SQLException("Table " + tableName + " does not exist.", e);
-            } else if (e.getMessage().startsWith("ERROR: invalid input syntax for integer:") || e.getMessage().startsWith("Unterminated string literal") || e.getMessage().startsWith("Unterminated identifier")) {
-                throw new SQLException("Something wrong with syntax or incompatible data types.", e);
-            }
-            throw e;
+            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
         }
-    }
-
-    private String getSQLForInsertDataInTable(String tableName, List<String> columnNames, List<String> columnValues) {
-        StringBuilder sql = new StringBuilder("INSERT INTO " + tableName + " (");
-        for (int i = 0; i < columnNames.size() - 1; i++) {
-            sql.append(columnNames.get(i)).append(", ");
-        }
-        sql.append(columnNames.get(columnNames.size() - 1)).append(") VALUES (");
-        for (int i = 0; i < columnValues.size() - 1; i++) {
-            sql.append(columnValues.get(i)).append(", ");
-        }
-        sql.append(columnValues.get(columnValues.size() - 1)).append(");");
-        return sql.toString();
     }
 
     @Override
@@ -139,7 +113,8 @@ public class PostgresDatabaseManager implements DatabaseManager {
 
         String sql = "SELECT * FROM public." + tableName + ";";
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+             ResultSet resultSet = statement.executeQuery(sql))
+        {
             List<String> result = new ArrayList<>();
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             while (resultSet.next()) {
@@ -147,7 +122,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
                     result.add(resultSet.getObject(i + 1).toString());
                 }
             }
-
             return result;
         } catch (SQLException e) {
             if (e.getMessage().startsWith("ERROR: relation \"public." + tableName + "\" does not exist")) {
@@ -155,7 +129,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
             } else if (e.getMessage().startsWith("ERROR: syntax error at or near")) {
                 throw new SQLException("Syntax error in table name.");
             }
-            throw e;
+            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
         }
     }
 
@@ -180,45 +154,21 @@ public class PostgresDatabaseManager implements DatabaseManager {
             } else if (e.getMessage().startsWith("ERROR: syntax error at or near")) {
                 throw new SQLException("Syntax error in table name.");
             }
-            throw e;
+            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
         }
     }
 
     @Override
     public void create(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) throws SQLException {
-        if (namesOfColumns.size() != typesOfColumns.size()) {
-            throw new IllegalArgumentException("Can not create new table with difference number of column names and column types.");
-        }
-
+        throwExceptionIfSizesOfListsNotEqual(namesOfColumns, typesOfColumns);
         throwExceptionIfNotConnected();
 
         try (Statement statement = connection.createStatement()) {
             String sql = getSQLForCreatingNewTable(tableName, namesOfColumns, typesOfColumns);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            if (e.getMessage().equals("ERROR: relation \"test\" already exists")) {
-                throw new SQLException("Table with name " + tableName + " already exists. You can not create the table with the same name.", e);
-            } else if (e.getMessage().startsWith("ERROR: type")) {
-                throw new SQLException("You used wrong type for one or more columns.", e);
-            } else if (e.getMessage().startsWith("ERROR: syntax error at or near")) {
-                throw new SQLException("You used wrong name for one or more columns.", e);
-            } else {
-                throw e;
-            }
+            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
         }
-    }
-
-    private String getSQLForCreatingNewTable(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) {
-        StringBuilder sql = new StringBuilder("CREATE TABLE public." + tableName + " (");
-
-        if (namesOfColumns.size() != 0) {
-            for (int i = 0; i < namesOfColumns.size() - 1; i++) {
-                sql.append(namesOfColumns.get(i)).append(" ").append(typesOfColumns.get(i)).append(", ");
-            }
-            sql.append(namesOfColumns.get(namesOfColumns.size() - 1)).append(" ").append(typesOfColumns.get(typesOfColumns.size() - 1));
-        }
-        sql.append(");");
-        return sql.toString();
     }
 
     @Override
@@ -236,9 +186,61 @@ public class PostgresDatabaseManager implements DatabaseManager {
         }
     }
 
+    private String getSQLForCreatingNewTable(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) {
+        StringBuilder sql = new StringBuilder("CREATE TABLE public." + tableName + " (");
+
+        if (namesOfColumns.size() != 0) {
+            for (int i = 0; i < namesOfColumns.size() - 1; i++) {
+                sql.append(namesOfColumns.get(i)).append(" ").append(typesOfColumns.get(i)).append(", ");
+            }
+            sql.append(namesOfColumns.get(namesOfColumns.size() - 1)).append(" ").append(typesOfColumns.get(typesOfColumns.size() - 1));
+        }
+        sql.append(");");
+        return sql.toString();
+    }
+
+    private String getSQLForInsertDataInTable(String tableName, List<String> columnNames, List<String> columnValues) {
+        StringBuilder sql = new StringBuilder("INSERT INTO " + tableName + " (");
+        for (int i = 0; i < columnNames.size() - 1; i++) {
+            sql.append(columnNames.get(i)).append(", ");
+        }
+        sql.append(columnNames.get(columnNames.size() - 1)).append(") VALUES (");
+        for (int i = 0; i < columnValues.size() - 1; i++) {
+            sql.append(columnValues.get(i)).append(", ");
+        }
+        sql.append(columnValues.get(columnValues.size() - 1)).append(");");
+        return sql.toString();
+    }
+
+    private String getSQLForUpdatingData(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn, List<String> namesOfUpdatableColumns, List<String> valuesOfUpdatableColumns) {
+        StringBuilder sql = new StringBuilder("UPDATE " + tableName + " SET ");
+        for (int i = 0; i < namesOfUpdatableColumns.size() - 1; i++) {
+            sql.append(namesOfUpdatableColumns.get(i)).append(" = ").append(valuesOfUpdatableColumns.get(i)).append(", ");
+        }
+        sql.append(namesOfUpdatableColumns.get(namesOfUpdatableColumns.size() - 1)).append(" = ").append(valuesOfUpdatableColumns.get(valuesOfUpdatableColumns.size() - 1));
+        sql.append(" WHERE ").append(nameOfVerifiableColumn).append(" = ").append(valueOfVerifiableColumn).append(";");
+        return sql.toString();
+    }
+
+    private void throwExceptionIfSizesOfListsNotEqual(List<String> list1, List<String> list2) {
+        if (list1.size() != list2.size()) {
+            throw new IllegalArgumentException("You gave wrong arguments.");
+        }
+    }
+
     private void throwExceptionIfNotConnected() throws SQLException {
         if (!isConnected()) {
-            throw new SQLException(youAreNotConnectedToDatabaseErrorMessage);
+            throw new SQLException("You are not connected to database.");
+        }
+    }
+
+    private void closeIfWasConnected() throws SQLException {
+        if (isConnected()) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new SQLException("Previous connection was not close. Try again or reset SQLCmd.", e);
+            }
         }
     }
 }

@@ -52,7 +52,7 @@ public class Help implements Command {
         view.write("");
 
         view.write("\t- insert");
-        view.write("\t\tYou can use it for insert the row in the table.");
+        view.write("\t\tYou can use it for inserting the row in the table.");
         view.write("\t\tFormat: insert|table name|column 1|value 1|column 2|value 2|...|column N|value N");
         view.write("\t\t\"column 1\" - name of the first column, \"value 1\" - value of the first column");
         view.write("\t\t\"column 2\" - name of the second column, \"value 2\" - value of the second column");
@@ -60,11 +60,12 @@ public class Help implements Command {
         view.write("\t\tP.S. If one or more of your values are text, you need use special symbol '.");
         view.write("\t\tExample, insert|users|name|'some text'|password|'another text'");
         view.write("");
-//      TODO To finish "help" command
-        view.write("\t- update");
-        view.write("\t\tTODO");
-        view.write("");
 
+        view.write("\t- update");
+        view.write("\t\tYou can use it for updating data in columns.");
+        view.write("\t\tFormat: update|table name|name of verifiable column|value of verifiable column|name of updatable column 1|value of updatable column 1|...|name of updatable column N|value of updatable column N|");
+        view.write("");
+//      TODO To finish "help" command
         view.write("\t- delete");
         view.write("\t\tTODO");
         view.write("");
