@@ -76,8 +76,15 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void delete(String command) {
+    public void delete(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn) throws SQLException {
+        throwExceptionIfNotConnected();
 
+        try (Statement statement = connection.createStatement()) {
+            String sql = "DELETE FROM " + tableName + " WHERE " + nameOfVerifiableColumn + " = " + valueOfVerifiableColumn + ";";
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
+        }
     }
 
     @Override

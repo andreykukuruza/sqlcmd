@@ -1,5 +1,6 @@
 package controller.command;
 
+import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 

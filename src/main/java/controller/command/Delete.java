@@ -6,19 +6,19 @@ import view.View;
 
 import java.sql.SQLException;
 
-public class Drop implements Command {
-    private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
+public class Delete implements Command {
+    private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
     private View view;
     private DatabaseManager manager;
 
-    public Drop(View view, DatabaseManager manager) {
+    public Delete(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
     }
 
     @Override
     public boolean canExecute(String command) {
-        return command.startsWith("drop");
+        return command.startsWith("delete");
     }
 
     @Override
@@ -27,9 +27,11 @@ public class Drop implements Command {
 
         if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
             String tableName = formatCommand[1];
+            String nameOfVerifiableColumn = formatCommand[2];
+            String valueOfVerifiableColumn = formatCommand[3];
             try {
-                manager.drop(tableName);
-                view.write("Table " + tableName + " was dropped. Enter next command or help:");
+                manager.delete(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn);
+                new Find(this.view, this.manager).execute("find|" + tableName);
             } catch (SQLException e) {
                 view.write(e.getMessage());
                 view.write(CommandMessages.ENTER_NEXT_COMMAND);

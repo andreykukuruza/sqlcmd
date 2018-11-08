@@ -65,9 +65,10 @@ public class Help implements Command {
         view.write("\t\tYou can use it for updating data in columns.");
         view.write("\t\tFormat: update|table name|name of verifiable column|value of verifiable column|name of updatable column 1|value of updatable column 1|...|name of updatable column N|value of updatable column N|");
         view.write("");
-//      TODO To finish "help" command
+
         view.write("\t- delete");
-        view.write("\t\tTODO");
+        view.write("\t\tYou can use it for deleting data in the table with parameters.");
+        view.write("\t\tFormat: delete|table name|name of verifiable column|value of verifiable column");
         view.write("");
 
         view.write("\t- help");

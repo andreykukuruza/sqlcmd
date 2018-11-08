@@ -20,11 +20,11 @@ public class Controller {
                 new Drop(view, manager),
                 new Create(view, manager),
                 new Insert(view, manager),
+                new Delete(view, manager),
                 new Update(view, manager),
                 new Clear(view, manager),
                 new Unsupported(view)
-                /*TODO Init array of all commands. Последовательность имеет значение.
-                TODO До isConnected() - функции, которые не зависят от connection, после - которые зависят. Последняя - Unsupported*/};
+                };
     }
 
     public void run() {

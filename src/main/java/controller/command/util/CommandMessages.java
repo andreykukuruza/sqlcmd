@@ -1,4 +1,4 @@
-package controller.command;
+package controller.command.util;
 
 public class CommandMessages {
     public static final String INCORRECT_FORMAT_ERR_MSG = "Incorrect command format. Try again or enter help:";
