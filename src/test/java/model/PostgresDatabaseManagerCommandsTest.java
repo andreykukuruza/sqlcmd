@@ -261,6 +261,54 @@ public class PostgresDatabaseManagerCommandsTest {
         manager.drop(tableName);
     }
 
+    @Test
+    public void insertTest_WithIncorrectTableName() throws SQLException {
+//        given
+        String tableName = "test";
+        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+//        when
+        SQLException e = assertThrows(SQLException.class, () -> manager.insert(
+                "IncorrectTableName",
+                Arrays.asList("name", "age", "id"),
+                Arrays.asList("'Lisa'", "22", "42")));
+//        then
+        assertEquals(errorMessage, e.getMessage());
+//        after
+        manager.drop(tableName);
+    }
+
+    @Test
+    public void insertTest_WithIncorrectColumnName() throws SQLException {
+//        given
+        String tableName = "test";
+        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+//        when
+        SQLException e = assertThrows(SQLException.class, () -> manager.insert(
+                tableName,
+                Arrays.asList("IncorrectColumnName", "age", "id"),
+                Arrays.asList("'Lisa'", "22", "42")));
+//        then
+        assertEquals(errorMessage, e.getMessage());
+//        after
+        manager.drop(tableName);
+    }
+
+    @Test
+    public void insertTest_WithIncorrectColumnType() throws SQLException {
+//        given
+        String tableName = "test";
+        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+//        when
+        SQLException e = assertThrows(SQLException.class, () -> manager.insert(
+                tableName,
+                Arrays.asList("name", "age", "id"),
+                Arrays.asList("'Lisa'", "'IncorrectColumnType'", "42")));
+//        then
+        assertEquals(errorMessage, e.getMessage());
+//        after
+        manager.drop(tableName);
+    }
+
     private void createTableWithData(String tableName) throws SQLException {
         ArrayList<String> columnsNames = new ArrayList<>(Arrays.asList("name", "age", "id"));
         ArrayList<String> columnsTypes = new ArrayList<>(Arrays.asList("text", "int", "int"));
