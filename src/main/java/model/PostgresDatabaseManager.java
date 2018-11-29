@@ -70,13 +70,13 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void delete(String tableName, String nameOfVerifiableColumn,
-                       String valueOfVerifiableColumn) throws SQLException {
+    public void delete(String tableName, String verifiableColumnName,
+                       String verifiableColumnValue) throws SQLException {
         throwExceptionIfNotConnected();
 
         try (Statement statement = connection.createStatement()) {
-            String sql = "DELETE FROM " + tableName + " WHERE " + nameOfVerifiableColumn + " = "
-                    + valueOfVerifiableColumn + ";";
+            String sql = "DELETE FROM " + tableName + " WHERE " + verifiableColumnName + " = "
+                    + verifiableColumnValue + ";";
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
@@ -84,15 +84,15 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void update(String tableName, String nameOfVerifiableColumn,
-                       String valueOfVerifiableColumn, List<String> namesOfUpdatableColumns,
-                       List<String> valuesOfUpdatableColumns) throws SQLException {
-        throwExceptionIfSizesOfListsNotEqual(namesOfUpdatableColumns, valuesOfUpdatableColumns);
+    public void update(String tableName, String verifiableColumnName,
+                       String verifiableColumnValue, List<String> updatableColumnsNames,
+                       List<String> updatableColumnsValues) throws SQLException {
+        throwExceptionIfSizesOfListsNotEqual(updatableColumnsNames, updatableColumnsValues);
         throwExceptionIfNotConnected();
 
         try (Statement statement = connection.createStatement()) {
-            String sql = getSQLForUpdatingData(tableName, nameOfVerifiableColumn,
-                    valueOfVerifiableColumn, namesOfUpdatableColumns, valuesOfUpdatableColumns);
+            String sql = getSQLForUpdatingData(tableName, verifiableColumnName,
+                    verifiableColumnValue, updatableColumnsNames, updatableColumnsValues);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
@@ -166,13 +166,13 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void create(String tableName, List<String> namesOfColumns,
-                       List<String> typesOfColumns) throws SQLException {
-        throwExceptionIfSizesOfListsNotEqual(namesOfColumns, typesOfColumns);
+    public void create(String tableName, List<String> columnsNames,
+                       List<String> columnsTypes) throws SQLException {
+        throwExceptionIfSizesOfListsNotEqual(columnsNames, columnsTypes);
         throwExceptionIfNotConnected();
 
         try (Statement statement = connection.createStatement()) {
-            String sql = getSQLForCreatingNewTable(tableName, namesOfColumns, typesOfColumns);
+            String sql = getSQLForCreatingNewTable(tableName, columnsNames, columnsTypes);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
@@ -194,16 +194,16 @@ public class PostgresDatabaseManager implements DatabaseManager {
         }
     }
 
-    private String getSQLForCreatingNewTable(String tableName, List<String> namesOfColumns,
-                                             List<String> typesOfColumns) {
+    private String getSQLForCreatingNewTable(String tableName, List<String> columnsNames,
+                                             List<String> columnsTypes) {
         StringBuilder sql = new StringBuilder("CREATE TABLE public." + tableName + " (");
 
-        if (namesOfColumns.size() != 0) {
-            for (int i = 0; i < namesOfColumns.size() - 1; i++) {
-                sql.append(namesOfColumns.get(i)).append(" ").append(typesOfColumns.get(i)).append(", ");
+        if (columnsNames.size() != 0) {
+            for (int i = 0; i < columnsNames.size() - 1; i++) {
+                sql.append(columnsNames.get(i)).append(" ").append(columnsTypes.get(i)).append(", ");
             }
-            sql.append(namesOfColumns.get(namesOfColumns.size() - 1)).append(" ");
-            sql.append(typesOfColumns.get(typesOfColumns.size() - 1));
+            sql.append(columnsNames.get(columnsNames.size() - 1)).append(" ");
+            sql.append(columnsTypes.get(columnsTypes.size() - 1));
         }
         sql.append(");");
         return sql.toString();
@@ -222,16 +222,16 @@ public class PostgresDatabaseManager implements DatabaseManager {
         return sql.toString();
     }
 
-    private String getSQLForUpdatingData(String tableName, String nameOfVerifiableColumn,
-                                         String valueOfVerifiableColumn, List<String> namesOfUpdatableColumns,
-                                         List<String> valuesOfUpdatableColumns) {
+    private String getSQLForUpdatingData(String tableName, String verifiableColumnName,
+                                         String verifiableColumnValue, List<String> updatableColumnsNames,
+                                         List<String> updatableColumnsValues) {
         StringBuilder sql = new StringBuilder("UPDATE " + tableName + " SET ");
-        for (int i = 0; i < namesOfUpdatableColumns.size() - 1; i++) {
-            sql.append(namesOfUpdatableColumns.get(i)).append(" = ").append(valuesOfUpdatableColumns.get(i)).append(", ");
+        for (int i = 0; i < updatableColumnsNames.size() - 1; i++) {
+            sql.append(updatableColumnsNames.get(i)).append(" = ").append(updatableColumnsValues.get(i)).append(", ");
         }
-        sql.append(namesOfUpdatableColumns.get(namesOfUpdatableColumns.size() - 1));
-        sql.append(" = ").append(valuesOfUpdatableColumns.get(valuesOfUpdatableColumns.size() - 1));
-        sql.append(" WHERE ").append(nameOfVerifiableColumn).append(" = ").append(valueOfVerifiableColumn).append(";");
+        sql.append(updatableColumnsNames.get(updatableColumnsNames.size() - 1));
+        sql.append(" = ").append(updatableColumnsValues.get(updatableColumnsValues.size() - 1));
+        sql.append(" WHERE ").append(verifiableColumnName).append(" = ").append(verifiableColumnValue).append(";");
         return sql.toString();
     }
 
