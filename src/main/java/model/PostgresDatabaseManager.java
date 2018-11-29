@@ -134,7 +134,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public Set<String> getColumnNamesInTable(String tableName) throws SQLException {
+    public Set<String> getColumnsNamesInTable(String tableName) throws SQLException {
         throwExceptionIfNotConnected();
 
         String sql = "SELECT * FROM public." + tableName + ";";

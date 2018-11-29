@@ -5,9 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -348,6 +346,51 @@ class PostgresDatabaseManagerCommandsTest {
         manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
 //        when
         SQLException e = assertThrows(SQLException.class, () -> manager.getTableData("IncorrectTableName"));
+//        then
+        assertEquals(errorMessage, e.getMessage());
+//        after
+        manager.drop(tableName);
+    }
+
+    @Test
+    void getColumnsNamesInTableTest_WithoutColumns() throws SQLException {
+//        given
+        String tableName = "test";
+        manager.create(tableName, new ArrayList<>(), new ArrayList<>());
+//        when
+        Set<String> actual = manager.getColumnsNamesInTable(tableName);
+//        then
+        assertTrue(actual.isEmpty());
+//        after
+        manager.drop(tableName);
+    }
+
+    @Test
+    void getColumnsNamesInTableTest_WithColumns() throws SQLException {
+//        given
+        String tableName = "test";
+        createTableWithData(tableName);
+//        when
+        Set<String> actual = manager.getColumnsNamesInTable(tableName);
+//        then
+        HashSet<String> expected = new HashSet<String>() {{
+            add("name");
+            add("age");
+            add("id");
+        }};
+        assertEquals(expected, actual);
+//        after
+        manager.drop(tableName);
+    }
+
+    @Test
+    void getColumnsNamesInTableTest_WithIncorrectTableName() throws SQLException {
+//        given
+        String tableName = "test";
+        createTableWithData(tableName);
+//        when
+        SQLException e = assertThrows(SQLException.class,
+                () -> manager.getColumnsNamesInTable("IncorrectTableName"));
 //        then
         assertEquals(errorMessage, e.getMessage());
 //        after

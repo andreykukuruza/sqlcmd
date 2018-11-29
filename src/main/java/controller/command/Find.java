@@ -31,7 +31,7 @@ public class Find implements Command {
         if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
             String tableName = formatCommand[1];
             try {
-                Set<String> columnNames = manager.getColumnNamesInTable(tableName);
+                Set<String> columnNames = manager.getColumnsNamesInTable(tableName);
                 List<String> tableData = manager.getTableData(tableName);
                 TableFormatter table = new TableFormatter(columnNames, tableData);
                 view.write(table.getTableString());

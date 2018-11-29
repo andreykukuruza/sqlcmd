@@ -23,7 +23,7 @@ public interface DatabaseManager {
 
     List<String> getTableData(String tableName) throws SQLException;
 
-    Set<String> getColumnNamesInTable(String tableName) throws SQLException;
+    Set<String> getColumnsNamesInTable(String tableName) throws SQLException;
 
     void create(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) throws SQLException;
 
