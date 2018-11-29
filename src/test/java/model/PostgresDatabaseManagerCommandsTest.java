@@ -31,7 +31,7 @@ public class PostgresDatabaseManagerCommandsTest {
 //        given
         manager.create("table1", new ArrayList<>(), new ArrayList<>());
         manager.create("table2", new ArrayList<>(), new ArrayList<>());
-        List<String> expected = new ArrayList<>(Arrays.asList("table1", "table2"));
+        List<String> expected = Arrays.asList("table1", "table2");
 //        when
         ArrayList<String> actual = manager.tables();
 //        then
@@ -145,7 +145,7 @@ public class PostgresDatabaseManagerCommandsTest {
                 "Alisa", "21", "4",
                 "DELETED", "-1", "-1",
                 "DELETED", "-1", "-1");
-        assertEquals(actual, expected);
+        assertEquals(expected, actual);
 //        after
         manager.drop(tableName);
     }
@@ -205,7 +205,7 @@ public class PostgresDatabaseManagerCommandsTest {
                 "Alex", "19", "2",
                 "Alisa", "19", "3",
                 "Alisa", "21", "4");
-        assertEquals(actual, expected);
+        assertEquals(expected, actual);
 //        after
         manager.drop(tableName);
     }
@@ -256,7 +256,7 @@ public class PostgresDatabaseManagerCommandsTest {
 //        then
         List<String> actual = manager.getTableData(tableName);
         List<String> expected = Arrays.asList("Lisa", "22", "42");
-        assertEquals(actual, expected);
+        assertEquals(expected, actual);
 //        after
         manager.drop(tableName);
     }
@@ -303,6 +303,51 @@ public class PostgresDatabaseManagerCommandsTest {
                 tableName,
                 Arrays.asList("name", "age", "id"),
                 Arrays.asList("'Lisa'", "'IncorrectColumnType'", "42")));
+//        then
+        assertEquals(errorMessage, e.getMessage());
+//        after
+        manager.drop(tableName);
+    }
+
+    @Test
+    public void getTableDataTest_WithEmptyTable() throws SQLException {
+//        given
+        String tableName = "test";
+        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+//        when
+        List<String> actual = manager.getTableData(tableName);
+//        then
+        assertTrue(actual.isEmpty());
+//        after
+        manager.drop(tableName);
+    }
+
+    @Test
+    public void getTableDataTest_WithNotEmptyTable() throws SQLException {
+//        given
+        String tableName = "test";
+        createTableWithData(tableName);
+//        when
+        List<String> actual = manager.getTableData(tableName);
+        List<String> expected = Arrays.asList(
+                "Monica", "13", "1",
+                "Alex", "19", "2",
+                "Alisa", "19", "3",
+                "Alisa", "21", "4"
+        );
+//        then
+        assertEquals(expected, actual);
+//        after
+        manager.drop(tableName);
+    }
+
+    @Test
+    public void getTableDataTest_WithIncorrectTableName() throws SQLException {
+//        given
+        String tableName = "test";
+        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+//        when
+        SQLException e = assertThrows(SQLException.class, () -> manager.getTableData("IncorrectTableName"));
 //        then
         assertEquals(errorMessage, e.getMessage());
 //        after
