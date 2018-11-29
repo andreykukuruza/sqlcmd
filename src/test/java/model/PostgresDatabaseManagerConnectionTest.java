@@ -8,11 +8,8 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PostgresDatabaseManagerTest {
+public class PostgresDatabaseManagerConnectionTest {
     private PostgresDatabaseManager manager;
-    private String correctDatabaseName = "sqlcmdDB";
-    private String correctUserName = "postgres";
-    private String correctPassword = "sup3r42pass";
 
     @BeforeEach
     public void setUp() {
@@ -20,12 +17,8 @@ public class PostgresDatabaseManagerTest {
     }
 
     @AfterEach
-    public void tearDown() {
-        try {
-            manager.exit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void tearDown() throws SQLException {
+        manager.exit();
     }
 
     @Test
@@ -40,8 +33,8 @@ public class PostgresDatabaseManagerTest {
     @Test
     public void connectWithWrongPasswordTest() {
         SQLException e = assertThrows(SQLException.class, () -> manager.connect(
-                correctDatabaseName,
-                correctUserName,
+                Config.getCorrectDatabaseName(),
+                Config.getCorrectUserName(),
                 "WrongPassword"));
         assertEquals("Username or password are incorrect.", e.getMessage());
     }
@@ -49,9 +42,9 @@ public class PostgresDatabaseManagerTest {
     @Test
     public void connectWithWrongUserNameTest() {
         SQLException e = assertThrows(SQLException.class, () -> manager.connect(
-                correctDatabaseName,
+                Config.getCorrectDatabaseName(),
                 "WrongUserName",
-                correctPassword));
+                Config.getCorrectPassword()));
         assertEquals("Username or password are incorrect.", e.getMessage());
     }
 
@@ -59,17 +52,20 @@ public class PostgresDatabaseManagerTest {
     public void connectWithWrongDatabaseNameTest() {
         SQLException e = assertThrows(SQLException.class, () -> manager.connect(
                 "WrongDatabaseName",
-                correctUserName,
-                correctPassword));
+                Config.getCorrectUserName(),
+                Config.getCorrectPassword()));
         assertEquals("Database WrongDatabaseName does not exist.", e.getMessage());
     }
 
     @Test
     public void connectWithCorrectParametersTest() {
         try {
-            manager.connect(correctDatabaseName, correctUserName, correctPassword);
+            manager.connect(
+                    Config.getCorrectDatabaseName(),
+                    Config.getCorrectUserName(),
+                    Config.getCorrectPassword());
         } catch (SQLException e) {
-            fail("Fail connect with correct parameters.");
+            fail("Fail connecting with correct parameters.");
         }
     }
 
@@ -77,18 +73,35 @@ public class PostgresDatabaseManagerTest {
     public void connectAfterConnectTest() {
         assertFalse(manager.isConnected());
         try {
-            manager.connect(correctDatabaseName, correctUserName, correctPassword);
+            manager.connect(
+                    Config.getCorrectDatabaseName(),
+                    Config.getCorrectUserName(),
+                    Config.getCorrectPassword());
         } catch (SQLException e) {
-            fail("Fail connect with correct parameters.");
+            fail("Fail connecting with correct parameters.");
         }
 
         assertTrue(manager.isConnected());
         try {
-            manager.connect(correctDatabaseName, correctUserName, correctPassword);
+            manager.connect(
+                    Config.getCorrectDatabaseName(),
+                    Config.getCorrectUserName(),
+                    Config.getCorrectPassword());
         } catch (SQLException e) {
-            fail("Fail connect with correct parameters.");
+            fail("Fail connecting with correct parameters.");
         }
     }
 
-
+    @Test
+    public void isConnectedTest() throws SQLException {
+//        given
+        manager.connect(
+                Config.getCorrectDatabaseName(),
+                Config.getCorrectUserName(),
+                Config.getCorrectPassword());
+//        when
+        boolean isConnected = manager.isConnected();
+//        then
+        assertTrue(isConnected);
+    }
 }

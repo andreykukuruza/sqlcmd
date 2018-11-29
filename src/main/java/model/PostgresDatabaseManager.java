@@ -33,12 +33,10 @@ public class PostgresDatabaseManager implements DatabaseManager {
     @Override
     public ArrayList<String> tables() throws SQLException {
         throwExceptionIfNotConnected();
-
         String sql = "SELECT table_name FROM information_schema.tables\n" +
                 "WHERE table_schema NOT IN ('information_schema', 'pg_catalog')\n" +
                 "AND table_schema IN('public');";
         ArrayList<String> tableNames = new ArrayList<>();
-
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
@@ -56,11 +54,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
             String sql = "DELETE FROM " + tableName + ";";
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            if (e.getMessage().equals("ERROR: relation \"" + tableName + "\" does not exist\n" + "  Позиция: 13")) {
-                throw new SQLException("Table " + tableName + " does not exist.", e);
-            } else {
-                throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
-            }
+            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
         }
     }
 
@@ -76,11 +70,13 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void delete(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn) throws SQLException {
+    public void delete(String tableName, String nameOfVerifiableColumn,
+                       String valueOfVerifiableColumn) throws SQLException {
         throwExceptionIfNotConnected();
 
         try (Statement statement = connection.createStatement()) {
-            String sql = "DELETE FROM " + tableName + " WHERE " + nameOfVerifiableColumn + " = " + valueOfVerifiableColumn + ";";
+            String sql = "DELETE FROM " + tableName + " WHERE " + nameOfVerifiableColumn + " = "
+                    + valueOfVerifiableColumn + ";";
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
@@ -88,12 +84,15 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void update(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn, List<String> namesOfUpdatableColumns, List<String> valuesOfUpdatableColumns) throws SQLException {
+    public void update(String tableName, String nameOfVerifiableColumn,
+                       String valueOfVerifiableColumn, List<String> namesOfUpdatableColumns,
+                       List<String> valuesOfUpdatableColumns) throws SQLException {
         throwExceptionIfSizesOfListsNotEqual(namesOfUpdatableColumns, valuesOfUpdatableColumns);
         throwExceptionIfNotConnected();
 
         try (Statement statement = connection.createStatement()) {
-            String sql = getSQLForUpdatingData(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn, namesOfUpdatableColumns, valuesOfUpdatableColumns);
+            String sql = getSQLForUpdatingData(tableName, nameOfVerifiableColumn,
+                    valueOfVerifiableColumn, namesOfUpdatableColumns, valuesOfUpdatableColumns);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
@@ -102,7 +101,8 @@ public class PostgresDatabaseManager implements DatabaseManager {
 
 
     @Override
-    public void insert(String tableName, List<String> columnNames, List<String> columnValues) throws SQLException {
+    public void insert(String tableName, List<String> columnNames,
+                       List<String> columnValues) throws SQLException {
         throwExceptionIfSizesOfListsNotEqual(columnNames, columnValues);
         throwExceptionIfNotConnected();
 
@@ -120,8 +120,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
 
         String sql = "SELECT * FROM public." + tableName + ";";
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql))
-        {
+             ResultSet resultSet = statement.executeQuery(sql)) {
             List<String> result = new ArrayList<>();
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             while (resultSet.next()) {
@@ -131,7 +130,8 @@ public class PostgresDatabaseManager implements DatabaseManager {
             }
             return result;
         } catch (SQLException e) {
-            if (e.getMessage().startsWith("ERROR: relation \"public." + tableName + "\" does not exist")) {
+            if (e.getMessage().startsWith("ERROR: relation \"public."
+                    + tableName + "\" does not exist")) {
                 throw new SQLException("Table " + tableName + " does not exist.");
             } else if (e.getMessage().startsWith("ERROR: syntax error at or near")) {
                 throw new SQLException("Syntax error in table name.");
@@ -166,7 +166,8 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void create(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) throws SQLException {
+    public void create(String tableName, List<String> namesOfColumns,
+                       List<String> typesOfColumns) throws SQLException {
         throwExceptionIfSizesOfListsNotEqual(namesOfColumns, typesOfColumns);
         throwExceptionIfNotConnected();
 
@@ -193,14 +194,16 @@ public class PostgresDatabaseManager implements DatabaseManager {
         }
     }
 
-    private String getSQLForCreatingNewTable(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) {
+    private String getSQLForCreatingNewTable(String tableName, List<String> namesOfColumns,
+                                             List<String> typesOfColumns) {
         StringBuilder sql = new StringBuilder("CREATE TABLE public." + tableName + " (");
 
         if (namesOfColumns.size() != 0) {
             for (int i = 0; i < namesOfColumns.size() - 1; i++) {
                 sql.append(namesOfColumns.get(i)).append(" ").append(typesOfColumns.get(i)).append(", ");
             }
-            sql.append(namesOfColumns.get(namesOfColumns.size() - 1)).append(" ").append(typesOfColumns.get(typesOfColumns.size() - 1));
+            sql.append(namesOfColumns.get(namesOfColumns.size() - 1)).append(" ");
+            sql.append(typesOfColumns.get(typesOfColumns.size() - 1));
         }
         sql.append(");");
         return sql.toString();
@@ -219,12 +222,15 @@ public class PostgresDatabaseManager implements DatabaseManager {
         return sql.toString();
     }
 
-    private String getSQLForUpdatingData(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn, List<String> namesOfUpdatableColumns, List<String> valuesOfUpdatableColumns) {
+    private String getSQLForUpdatingData(String tableName, String nameOfVerifiableColumn,
+                                         String valueOfVerifiableColumn, List<String> namesOfUpdatableColumns,
+                                         List<String> valuesOfUpdatableColumns) {
         StringBuilder sql = new StringBuilder("UPDATE " + tableName + " SET ");
         for (int i = 0; i < namesOfUpdatableColumns.size() - 1; i++) {
             sql.append(namesOfUpdatableColumns.get(i)).append(" = ").append(valuesOfUpdatableColumns.get(i)).append(", ");
         }
-        sql.append(namesOfUpdatableColumns.get(namesOfUpdatableColumns.size() - 1)).append(" = ").append(valuesOfUpdatableColumns.get(valuesOfUpdatableColumns.size() - 1));
+        sql.append(namesOfUpdatableColumns.get(namesOfUpdatableColumns.size() - 1));
+        sql.append(" = ").append(valuesOfUpdatableColumns.get(valuesOfUpdatableColumns.size() - 1));
         sql.append(" WHERE ").append(nameOfVerifiableColumn).append(" = ").append(valueOfVerifiableColumn).append(";");
         return sql.toString();
     }
