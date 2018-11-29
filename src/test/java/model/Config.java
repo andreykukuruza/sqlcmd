@@ -6,19 +6,19 @@ package model;
  **/
 
 class Config {
-    private static final String correctDatabaseName = "AlwaysEmptyTestDatabase";
-    private static final String correctUserName = "postgres";
-    private static final String correctPassword = "sup3r42pass";
+    private static final String DatabaseName = "AlwaysEmptyTestDatabase";
+    private static final String UserName = "postgres";
+    private static final String Password = "sup3r42pass";
 
-    static String getCorrectUserName() {
-        return correctUserName;
+    static String getUserName() {
+        return UserName;
     }
 
-    static String getCorrectPassword() {
-        return correctPassword;
+    static String getPassword() {
+        return Password;
     }
 
-    static String getCorrectDatabaseName() {
-        return correctDatabaseName;
+    static String getDatabaseName() {
+        return DatabaseName;
     }
 }

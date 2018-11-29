@@ -16,7 +16,7 @@ class PostgresDatabaseManagerCommandsTest {
     @BeforeEach
     void setUp() throws SQLException {
         manager = new PostgresDatabaseManager();
-        manager.connect(Config.getCorrectDatabaseName(), Config.getCorrectUserName(), Config.getCorrectPassword());
+        manager.connect(Config.getDatabaseName(), Config.getUserName(), Config.getPassword());
     }
 
     @AfterEach
@@ -29,13 +29,13 @@ class PostgresDatabaseManagerCommandsTest {
 //        given
         manager.create("table1", new ArrayList<>(), new ArrayList<>());
         manager.create("table2", new ArrayList<>(), new ArrayList<>());
+//        when
+        Set<String> actual = manager.tables();
+//        then
         Set<String> expected = new HashSet<String>() {{
             add("table1");
             add("table2");
         }};
-//        when
-        Set<String> actual = manager.tables();
-//        then
         assertEquals(expected, actual);
 //        after
         manager.drop("table1");

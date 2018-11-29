@@ -33,8 +33,8 @@ class PostgresDatabaseManagerConnectionTest {
     @Test
     void connectWithWrongPasswordTest() {
         SQLException e = assertThrows(SQLException.class, () -> manager.connect(
-                Config.getCorrectDatabaseName(),
-                Config.getCorrectUserName(),
+                Config.getDatabaseName(),
+                Config.getUserName(),
                 "WrongPassword"));
         assertEquals("Username or password are incorrect.", e.getMessage());
     }
@@ -42,9 +42,9 @@ class PostgresDatabaseManagerConnectionTest {
     @Test
     void connectWithWrongUserNameTest() {
         SQLException e = assertThrows(SQLException.class, () -> manager.connect(
-                Config.getCorrectDatabaseName(),
+                Config.getDatabaseName(),
                 "WrongUserName",
-                Config.getCorrectPassword()));
+                Config.getPassword()));
         assertEquals("Username or password are incorrect.", e.getMessage());
     }
 
@@ -52,8 +52,8 @@ class PostgresDatabaseManagerConnectionTest {
     void connectWithWrongDatabaseNameTest() {
         SQLException e = assertThrows(SQLException.class, () -> manager.connect(
                 "WrongDatabaseName",
-                Config.getCorrectUserName(),
-                Config.getCorrectPassword()));
+                Config.getUserName(),
+                Config.getPassword()));
         assertEquals("Database WrongDatabaseName does not exist.", e.getMessage());
     }
 
@@ -61,9 +61,9 @@ class PostgresDatabaseManagerConnectionTest {
     void connectWithCorrectParametersTest() {
         try {
             manager.connect(
-                    Config.getCorrectDatabaseName(),
-                    Config.getCorrectUserName(),
-                    Config.getCorrectPassword());
+                    Config.getDatabaseName(),
+                    Config.getUserName(),
+                    Config.getPassword());
         } catch (SQLException e) {
             fail("Fail connecting with correct parameters.");
         }
@@ -74,9 +74,9 @@ class PostgresDatabaseManagerConnectionTest {
         assertFalse(manager.isConnected());
         try {
             manager.connect(
-                    Config.getCorrectDatabaseName(),
-                    Config.getCorrectUserName(),
-                    Config.getCorrectPassword());
+                    Config.getDatabaseName(),
+                    Config.getUserName(),
+                    Config.getPassword());
         } catch (SQLException e) {
             fail("Fail connecting with correct parameters.");
         }
@@ -84,9 +84,9 @@ class PostgresDatabaseManagerConnectionTest {
         assertTrue(manager.isConnected());
         try {
             manager.connect(
-                    Config.getCorrectDatabaseName(),
-                    Config.getCorrectUserName(),
-                    Config.getCorrectPassword());
+                    Config.getDatabaseName(),
+                    Config.getUserName(),
+                    Config.getPassword());
         } catch (SQLException e) {
             fail("Fail connecting with correct parameters.");
         }
@@ -96,9 +96,9 @@ class PostgresDatabaseManagerConnectionTest {
     void isConnectedTest() throws SQLException {
 //        given
         manager.connect(
-                Config.getCorrectDatabaseName(),
-                Config.getCorrectUserName(),
-                Config.getCorrectPassword());
+                Config.getDatabaseName(),
+                Config.getUserName(),
+                Config.getPassword());
 //        when
         boolean isConnected = manager.isConnected();
 //        then
