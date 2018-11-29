@@ -130,12 +130,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
             }
             return result;
         } catch (SQLException e) {
-            if (e.getMessage().startsWith("ERROR: relation \"public."
-                    + tableName + "\" does not exist")) {
-                throw new SQLException("Table " + tableName + " does not exist.");
-            } else if (e.getMessage().startsWith("ERROR: syntax error at or near")) {
-                throw new SQLException("Syntax error in table name.");
-            }
             throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
         }
     }

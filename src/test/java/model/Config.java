@@ -5,20 +5,20 @@ package model;
  * In the fields indicate the name of this database, login and password.
  **/
 
-public class Config {
+class Config {
     private static final String correctDatabaseName = "AlwaysEmptyTestDatabase";
     private static final String correctUserName = "postgres";
     private static final String correctPassword = "sup3r42pass";
 
-    public static String getCorrectUserName() {
+    static String getCorrectUserName() {
         return correctUserName;
     }
 
-    public static String getCorrectPassword() {
+    static String getCorrectPassword() {
         return correctPassword;
     }
 
-    public static String getCorrectDatabaseName() {
+    static String getCorrectDatabaseName() {
         return correctDatabaseName;
     }
 }

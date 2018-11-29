@@ -11,23 +11,23 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PostgresDatabaseManagerCommandsTest {
+class PostgresDatabaseManagerCommandsTest {
     private PostgresDatabaseManager manager;
     private String errorMessage = "Input data does not correct.";
 
     @BeforeEach
-    public void setUp() throws SQLException {
+    void setUp() throws SQLException {
         manager = new PostgresDatabaseManager();
         manager.connect(Config.getCorrectDatabaseName(), Config.getCorrectUserName(), Config.getCorrectPassword());
     }
 
     @AfterEach
-    public void tearDown() throws SQLException {
+    void tearDown() throws SQLException {
         manager.exit();
     }
 
     @Test
-    public void tablesTest_WithTablesInDatabase() throws SQLException {
+    void tablesTest_WithTablesInDatabase() throws SQLException {
 //        given
         manager.create("table1", new ArrayList<>(), new ArrayList<>());
         manager.create("table2", new ArrayList<>(), new ArrayList<>());
@@ -42,12 +42,12 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void tablesTest_WithoutTablesInDatabase() throws SQLException {
+    void tablesTest_WithoutTablesInDatabase() throws SQLException {
         assertEquals(new ArrayList<>(), manager.tables());
     }
 
     @Test
-    public void clearTest_WithCorrectTableName() throws SQLException {
+    void clearTest_WithCorrectTableName() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -60,13 +60,13 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void clearTest__WithIncorrectTableName() {
+    void clearTest__WithIncorrectTableName() {
         SQLException e = assertThrows(SQLException.class, () -> manager.clear("WrongTableName"));
         assertEquals(errorMessage, e.getMessage());
     }
 
     @Test
-    public void deleteTest_WithCorrectParameters() throws SQLException {
+    void deleteTest_WithCorrectParameters() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -80,7 +80,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void deleteTest_WithIncorrectTableName() throws SQLException {
+    void deleteTest_WithIncorrectTableName() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -96,7 +96,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void deleteTest_WithIncorrectColumnName() throws SQLException {
+    void deleteTest_WithIncorrectColumnName() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -112,7 +112,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void deleteTest_WithIncorrectColumnType() throws SQLException {
+    void deleteTest_WithIncorrectColumnType() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -128,7 +128,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void updateTest_WithCorrectParameters() throws SQLException {
+    void updateTest_WithCorrectParameters() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -151,7 +151,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void updateTest_WithIncorrectTableName() throws SQLException {
+    void updateTest_WithIncorrectTableName() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -169,7 +169,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void updateTest_WithIncorrectVerifiableColumnName() throws SQLException {
+    void updateTest_WithIncorrectVerifiableColumnName() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -187,7 +187,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void updateTest_WithIncorrectVerifiableColumnValue() throws SQLException {
+    void updateTest_WithIncorrectVerifiableColumnValue() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -211,7 +211,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void updateTest_WithIncorrectUpdatableColumnsNames() throws SQLException {
+    void updateTest_WithIncorrectUpdatableColumnsNames() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -229,7 +229,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void updateTest_WithIncorrectUpdatableColumnsTypes() throws SQLException {
+    void updateTest_WithIncorrectUpdatableColumnsTypes() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -247,7 +247,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void insertTest_WithCorrectParameters() throws SQLException {
+    void insertTest_WithCorrectParameters() throws SQLException {
 //        given
         String tableName = "test";
         manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
@@ -262,7 +262,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void insertTest_WithIncorrectTableName() throws SQLException {
+    void insertTest_WithIncorrectTableName() throws SQLException {
 //        given
         String tableName = "test";
         manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
@@ -278,7 +278,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void insertTest_WithIncorrectColumnName() throws SQLException {
+    void insertTest_WithIncorrectColumnName() throws SQLException {
 //        given
         String tableName = "test";
         manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
@@ -294,7 +294,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void insertTest_WithIncorrectColumnType() throws SQLException {
+    void insertTest_WithIncorrectColumnType() throws SQLException {
 //        given
         String tableName = "test";
         manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
@@ -310,7 +310,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void getTableDataTest_WithEmptyTable() throws SQLException {
+    void getTableDataTest_WithEmptyTable() throws SQLException {
 //        given
         String tableName = "test";
         manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
@@ -323,7 +323,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void getTableDataTest_WithNotEmptyTable() throws SQLException {
+    void getTableDataTest_WithNotEmptyTable() throws SQLException {
 //        given
         String tableName = "test";
         createTableWithData(tableName);
@@ -342,7 +342,7 @@ public class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    public void getTableDataTest_WithIncorrectTableName() throws SQLException {
+    void getTableDataTest_WithIncorrectTableName() throws SQLException {
 //        given
         String tableName = "test";
         manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
