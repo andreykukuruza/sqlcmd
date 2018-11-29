@@ -1,5 +1,7 @@
 package model;
 
+import org.postgresql.util.PSQLException;
+
 import java.sql.*;
 import java.util.*;
 
@@ -15,7 +17,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
     @Override
     public void connect(String databaseName, String userName, String password) throws SQLException {
         closeIfWasConnected();
-
         String url = "jdbc:postgresql://localhost:5432/" + databaseName;
         try {
             connection = DriverManager.getConnection(url, userName, password);
@@ -150,11 +151,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
 
             return result;
         } catch (SQLException e) {
-            if (e.getMessage().startsWith("ERROR: relation \"public." + tableName + "\" does not exist")) {
-                throw new SQLException("Table " + tableName + " does not exist.");
-            } else if (e.getMessage().startsWith("ERROR: syntax error at or near")) {
-                throw new SQLException("Syntax error in table name.");
-            }
             throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
         }
     }
@@ -181,10 +177,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
             String sql = "DROP TABLE " + tableName + ";";
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            if (e.getMessage().equals("ERROR: table \"" + tableName + "\" does not exist")) {
-                throw new SQLException("Table " + tableName + " does not exist.");
-            }
-            System.out.println(e.getMessage());
+            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
         }
     }
 
