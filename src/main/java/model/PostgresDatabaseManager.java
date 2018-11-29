@@ -1,7 +1,5 @@
 package model;
 
-import org.postgresql.util.PSQLException;
-
 import java.sql.*;
 import java.util.*;
 
