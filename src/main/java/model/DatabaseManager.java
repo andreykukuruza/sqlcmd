@@ -9,7 +9,7 @@ public interface DatabaseManager {
 
     void connect(String databaseName, String username, String password) throws SQLException;
 
-    List<String> tables() throws SQLException;
+    Set<String> tables() throws SQLException;
 
     void clear(String tableName) throws SQLException;
 

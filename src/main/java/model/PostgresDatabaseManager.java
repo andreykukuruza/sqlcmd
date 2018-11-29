@@ -30,12 +30,12 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public ArrayList<String> tables() throws SQLException {
+    public Set<String> tables() throws SQLException {
         throwExceptionIfNotConnected();
         String sql = "SELECT table_name FROM information_schema.tables\n" +
                 "WHERE table_schema NOT IN ('information_schema', 'pg_catalog')\n" +
                 "AND table_schema IN('public');";
-        ArrayList<String> tableNames = new ArrayList<>();
+        Set<String> tableNames = new HashSet<>();
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {

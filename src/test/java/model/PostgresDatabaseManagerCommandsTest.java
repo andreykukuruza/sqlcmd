@@ -29,9 +29,12 @@ class PostgresDatabaseManagerCommandsTest {
 //        given
         manager.create("table1", new ArrayList<>(), new ArrayList<>());
         manager.create("table2", new ArrayList<>(), new ArrayList<>());
-        List<String> expected = Arrays.asList("table1", "table2");
+        Set<String> expected = new HashSet<String>() {{
+            add("table1");
+            add("table2");
+        }};
 //        when
-        ArrayList<String> actual = manager.tables();
+        Set<String> actual = manager.tables();
 //        then
         assertEquals(expected, actual);
 //        after
@@ -41,7 +44,7 @@ class PostgresDatabaseManagerCommandsTest {
 
     @Test
     void tablesTest_WithoutTablesInDatabase() throws SQLException {
-        assertEquals(new ArrayList<>(), manager.tables());
+        assertTrue(manager.tables().isEmpty());
     }
 
     @Test
@@ -393,6 +396,21 @@ class PostgresDatabaseManagerCommandsTest {
                 () -> manager.getColumnsNamesInTable("IncorrectTableName"));
 //        then
         assertEquals(errorMessage, e.getMessage());
+//        after
+        manager.drop(tableName);
+    }
+
+    @Test
+    void createTest_WithCorrectParameters() throws SQLException {
+//        when
+        String tableName = "test";
+        manager.create(tableName, Arrays.asList("name", "age"), Arrays.asList("text", "int"));
+//        then
+        Set<String> actual = manager.tables();
+        Set<String> expected = new HashSet<String>() {{
+            add("test");
+        }};
+        assertEquals(expected, actual);
 //        after
         manager.drop(tableName);
     }

@@ -5,7 +5,7 @@ import model.DatabaseManager;
 import view.View;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.Set;
 
 public class Tables implements Command {
     private View view;
@@ -24,7 +24,7 @@ public class Tables implements Command {
     @Override
     public void execute(String command) {
         try {
-            List<String> tableNames = manager.tables();
+            Set<String> tableNames = manager.tables();
             if (tableNames.size() == 0) {
                 view.write("No tables inside this database.");
                 view.write(CommandMessages.ENTER_NEXT_COMMAND);
