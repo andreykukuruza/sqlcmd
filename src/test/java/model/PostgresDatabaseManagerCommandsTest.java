@@ -433,6 +433,23 @@ class PostgresDatabaseManagerCommandsTest {
         assertEquals(errorMessage, e.getMessage());
     }
 
+    @Test
+    void dropTest_WithCorrectTableName() throws SQLException {
+//        given
+        String tableName = "test";
+        createTableWithData(tableName);
+//        when
+        manager.drop(tableName);
+//        then
+        assertTrue(manager.tables().isEmpty());
+    }
+
+    @Test
+    void dropTable_WithIncorrectTableName() {
+        SQLException e = assertThrows(SQLException.class, () -> manager.drop("WrongTableName"));
+        assertEquals(errorMessage, e.getMessage());
+    }
+
     private void createTableWithData(String tableName) throws SQLException {
         ArrayList<String> columnsNames = new ArrayList<>(Arrays.asList("name", "age", "id"));
         ArrayList<String> columnsTypes = new ArrayList<>(Arrays.asList("text", "int", "int"));
