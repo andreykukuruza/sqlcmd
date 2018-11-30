@@ -415,6 +415,24 @@ class PostgresDatabaseManagerCommandsTest {
         manager.drop(tableName);
     }
 
+    @Test
+    void createTest_WithDifferentSizeColumnsAndTypes() {
+//        when
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
+                () -> manager.create("test", Arrays.asList("name", "age", "id"), Arrays.asList("text", "int")));
+//        then
+        assertEquals("You gave wrong arguments.", e.getMessage());
+    }
+
+    @Test
+    void createTest_WithIncorrectType() {
+//        when
+        SQLException e = assertThrows(SQLException.class,
+                () -> manager.create("test", Arrays.asList("name", "age"), Arrays.asList("WrongType", "int")));
+//        then
+        assertEquals(errorMessage, e.getMessage());
+    }
+
     private void createTableWithData(String tableName) throws SQLException {
         ArrayList<String> columnsNames = new ArrayList<>(Arrays.asList("name", "age", "id"));
         ArrayList<String> columnsTypes = new ArrayList<>(Arrays.asList("text", "int", "int"));
