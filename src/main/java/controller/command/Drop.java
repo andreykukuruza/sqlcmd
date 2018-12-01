@@ -26,16 +26,19 @@ public class Drop implements Command {
         String[] formatCommand = command.split("\\|");
 
         if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
-            String tableName = formatCommand[1];
-            try {
-                manager.drop(tableName);
-                view.write("Table " + tableName + " was dropped. Enter next command or help:");
-            } catch (SQLException e) {
-                view.write(e.getMessage());
-                view.write(CommandMessages.ENTER_NEXT_COMMAND);
-            }
+            executeDrop(formatCommand[1]);
         } else {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+        }
+    }
+
+    private void executeDrop(String tableName) {
+        try {
+            manager.drop(tableName);
+            view.write("Table " + tableName + " was dropped. Enter next command or help:");
+        } catch (SQLException e) {
+            view.write(e.getMessage());
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
     }
 }
