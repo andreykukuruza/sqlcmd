@@ -26,7 +26,6 @@ public class Create implements Command {
     @Override
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
-
         if (isCorrectNumberOfParameters(formatCommand)) {
             executeCreate(formatCommand[1], getNamesOfColumns(formatCommand), getTypesOfColumns(formatCommand));
         } else {
