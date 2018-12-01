@@ -50,7 +50,7 @@ class ClearTest {
     }
 
     @Test
-    void executeTest_WithoutIncorrectNumberOfParameters() {
+    void executeTest_WithIncorrectNumberOfParameters() {
 //        given
         doNothing().when(view).write(anyString());
 //        when
