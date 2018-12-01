@@ -24,10 +24,10 @@ public class Clear implements Command {
     @Override
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
-        if (formatCommand.length != CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
-            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
-        } else {
+        if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
             executeClear(formatCommand[1]);
+        } else {
+            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
