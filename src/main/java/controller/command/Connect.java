@@ -24,17 +24,20 @@ public class Connect implements Command {
     @Override
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
-
         if (formatCommand.length == NUMBER_OF_PARAMETERS_IN_COMMAND) {
-            try {
-                manager.connect(formatCommand[1], formatCommand[2], formatCommand[3]);
-                view.write("Connect is successful. Enter next command or help:");
-            } catch (SQLException e) {
-                view.write(e.getMessage());
-                view.write(CommandMessages.ENTER_NEXT_COMMAND);
-            }
+            executeConnect(formatCommand[1], formatCommand[2], formatCommand[3]);
         } else {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+        }
+    }
+
+    private void executeConnect(String databaseName, String username, String password) {
+        try {
+            manager.connect(databaseName, username, password);
+            view.write("Connect is successful. Enter next command or help:");
+        } catch (SQLException e) {
+            view.write(e.getMessage());
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
     }
 }
