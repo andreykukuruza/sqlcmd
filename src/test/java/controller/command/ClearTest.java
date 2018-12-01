@@ -50,7 +50,7 @@ class ClearTest {
     }
 
     @Test
-    void executeTest_WithIncorrectNumberOfParameters() {
+    void executeTest_WithExcessParameter() {
 //        given
         doNothing().when(view).write(anyString());
 //        when
