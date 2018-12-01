@@ -24,18 +24,18 @@ public class Clear implements Command {
     @Override
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
-
-        if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
-            String tableName = formatCommand[1];
-            try {
-                manager.clear(tableName);
-                view.write("Table " + tableName + " was cleared. Enter next command or help:");
-            } catch (SQLException e) {
-                view.write(e.getMessage());
-                view.write(CommandMessages.ENTER_NEXT_COMMAND);
-            }
-        } else {
+        if (formatCommand.length != CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+            return;
+        }
+
+        String tableName = formatCommand[1];
+        try {
+            manager.clear(tableName);
+            view.write("Table " + tableName + " was cleared. Enter next command or help:");
+        } catch (SQLException e) {
+            view.write(e.getMessage());
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
     }
 }
