@@ -36,23 +36,16 @@ class ClearTest {
 
     @Test
     void executeTest_WithCorrectParametersInCommand() throws SQLException {
-//        given
-        String tableName = "tableName";
-        String command = "clear|" + tableName;
-        doNothing().when(manager).clear(tableName);
-        doNothing().when(view).write(anyString());
 //        when
-        clear.execute(command);
+        clear.execute("clear|tableName");
 //        then
-        verify(manager, times(1)).clear(tableName);
+        verify(manager, times(1)).clear("tableName");
         verify(view, times(1))
-                .write("Table " + tableName + " was cleared. Enter next command or help:");
+                .write("Table tableName was cleared. Enter next command or help:");
     }
 
     @Test
     void executeTest_WithExcessParameter() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         clear.execute("clear|tableName|excessParameter");
 //        then
@@ -61,8 +54,6 @@ class ClearTest {
 
     @Test
     void executeTest_WithoutTableName() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         clear.execute("clear");
 //        then
@@ -75,7 +66,6 @@ class ClearTest {
         String tableName = "tableName";
         SQLException e = new SQLException("Input data does not correct.");
         doThrow(e).when(manager).clear(tableName);
-        doNothing().when(view).write(anyString());
 //        when
         clear.execute("clear|" + tableName);
 //        then

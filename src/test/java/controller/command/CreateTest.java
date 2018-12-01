@@ -15,8 +15,6 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,9 +38,6 @@ class CreateTest {
 
     @Test
     void executeTest_WithCorrectParametersInCommand() throws SQLException {
-//        given
-        doNothing().when(manager).create(anyString(), anyList(), anyList());
-        doNothing().when(view).write(anyString());
 //        when
         create.execute("create|TableName|ColumnName1|ColumnValue1|ColumnName2|ColumnValue2");
 //        then
@@ -55,8 +50,6 @@ class CreateTest {
 
     @Test
     void executeTest_WithDifferentNumberOfColumnsNamesAndTypes() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         create.execute("create|TableName|ColumnName1|ColumnValue1|ColumnName2");
 //        then
@@ -65,9 +58,6 @@ class CreateTest {
 
     @Test
     void executeTest_WithoutColumns() throws SQLException {
-//        given
-        doNothing().when(view).write(anyString());
-        doNothing().when(manager).create(anyString(), anyList(), anyList());
 //        when
         create.execute("create|TableName");
 //        then
@@ -78,8 +68,6 @@ class CreateTest {
 
     @Test
     void executeTest_WithoutTableName() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         create.execute("create|ColumnName1|ColumnValue1|ColumnName2|ColumnValue2");
 //        then
@@ -89,7 +77,6 @@ class CreateTest {
     @Test
     void executeTest_WithIncorrectTableName() throws SQLException {
 //        given
-        doNothing().when(view).write(anyString());
         SQLException e = new SQLException("Input data does not correct.");
         doThrow(e).when(manager).create("WrongTableName",
                 Arrays.asList("ColumnName1", "ColumnName2"),
@@ -106,8 +93,6 @@ class CreateTest {
 
     @Test
     void executeTest_WithoutParameters() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         create.execute("create");
 //        then

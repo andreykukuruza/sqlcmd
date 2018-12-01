@@ -13,7 +13,6 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,9 +36,6 @@ class ConnectTest {
 
     @Test
     void executeTest_WithCorrectParametersInCommand() throws SQLException {
-//        given
-        doNothing().when(manager).connect(anyString(), anyString(), anyString());
-        doNothing().when(view).write(anyString());
 //        when
         connect.execute("connect|TestDatabaseName|TestUserName|TestPassword");
 //        then
@@ -51,8 +47,6 @@ class ConnectTest {
 
     @Test
     void executeTest_WithTooManyParameters() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         connect.execute("connect|TestDatabaseName|TestUserName|TestPassword|excessParameter");
 //        then
@@ -61,8 +55,6 @@ class ConnectTest {
 
     @Test
     void executeTest_WithoutPassword() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         connect.execute("connect|TestDatabaseName|TestUserName");
 //        then
@@ -71,8 +63,6 @@ class ConnectTest {
 
     @Test
     void executeTest_WithoutPasswordAndUsername() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         connect.execute("connect|TestDatabaseName");
 //        then
@@ -81,8 +71,6 @@ class ConnectTest {
 
     @Test
     void executeTest_WithoutParameters() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         connect.execute("connect");
 //        then
@@ -92,7 +80,6 @@ class ConnectTest {
     @Test
     void executeTest_WithIncorrectDatabaseName() throws SQLException {
 //        given
-        doNothing().when(view).write(anyString());
         doThrow(new SQLException("Database WrongDatabaseName does not exist."))
                 .when(manager)
                 .connect("WrongDatabaseName", "TestUserName", "TestPassword");
@@ -108,7 +95,6 @@ class ConnectTest {
     @Test
     void executeTest_WithIncorrectPassword() throws SQLException {
 //        given
-        doNothing().when(view).write(anyString());
         doThrow(new SQLException("Username or password are incorrect."))
                 .when(manager)
                 .connect("TestDatabaseName", "TestUserName", "WrongPassword");
@@ -124,7 +110,6 @@ class ConnectTest {
     @Test
     void executeTest_WithIncorrectUserName() throws SQLException {
 //        given
-        doNothing().when(view).write(anyString());
         doThrow(new SQLException("Username or password are incorrect."))
                 .when(manager)
                 .connect("TestDatabaseName", "WrongUserName", "TestPassword");

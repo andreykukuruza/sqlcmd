@@ -15,7 +15,6 @@ import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,7 +40,6 @@ class DeleteTest {
     void executeTest_WithCorrectParametersInCommand() throws SQLException {
 //        given
         String tableName = "TableName";
-        doNothing().when(manager).delete(anyString(), anyString(), anyString());
         when(manager.getColumnsNamesInTable(tableName))
                 .thenReturn(new HashSet<>(Arrays.asList("ColumnName1", "ColumnName2")));
         when(manager.getTableData(tableName))
@@ -64,8 +62,6 @@ class DeleteTest {
 
     @Test
     void executeTest_WithExcessParameter() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         delete.execute("delete|TableName|ColumnName|Value|ExcessParameter");
 //        then
@@ -74,8 +70,6 @@ class DeleteTest {
 
     @Test
     void executeTest_WithoutVerifiableValue() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         delete.execute("delete|TableName|ColumnName");
 //        then
@@ -84,8 +78,6 @@ class DeleteTest {
 
     @Test
     void executeTest_WithoutVerifiableNameAndValue() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         delete.execute("delete|TableName");
 //        then
@@ -94,8 +86,6 @@ class DeleteTest {
 
     @Test
     void executeTest_WithoutParameters() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         delete.execute("delete");
 //        then

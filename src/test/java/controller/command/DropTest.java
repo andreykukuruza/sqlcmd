@@ -36,22 +36,16 @@ class DropTest {
 
     @Test
     void executeTest_WithCorrectParametersInCommand() throws SQLException {
-//        given
-        String tableName = "TableName";
-        doNothing().when(manager).drop(tableName);
-        doNothing().when(view).write("Table " + tableName + " was dropped. Enter next command or help:");
 //        when
-        drop.execute("drop|" + tableName);
+        drop.execute("drop|TableName");
 //        then
-        verify(manager, times(1)).drop(tableName);
+        verify(manager, times(1)).drop("TableName");
         verify(view, times(1))
-                .write("Table " + tableName + " was dropped. Enter next command or help:");
+                .write("Table TableName was dropped. Enter next command or help:");
     }
 
     @Test
     void executeTest_WithExcessParameter() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         drop.execute("drop|TableName|ExcessParameter");
 //        then
@@ -60,8 +54,6 @@ class DropTest {
 
     @Test
     void executeTest_WithoutTableName() {
-//        given
-        doNothing().when(view).write(anyString());
 //        when
         drop.execute("drop");
 //        then
@@ -74,7 +66,6 @@ class DropTest {
         String tableName = "tableName";
         SQLException e = new SQLException("Input data does not correct.");
         doThrow(e).when(manager).drop(tableName);
-        doNothing().when(view).write(anyString());
 //        when
         drop.execute("drop|" + tableName);
 //        then
