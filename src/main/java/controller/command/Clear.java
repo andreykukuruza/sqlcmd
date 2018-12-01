@@ -26,10 +26,12 @@ public class Clear implements Command {
         String[] formatCommand = command.split("\\|");
         if (formatCommand.length != CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
-            return;
+        } else {
+            executeClear(formatCommand[1]);
         }
+    }
 
-        String tableName = formatCommand[1];
+    private void executeClear(String tableName) {
         try {
             manager.clear(tableName);
             view.write("Table " + tableName + " was cleared. Enter next command or help:");
