@@ -73,12 +73,11 @@ class ClearTest {
     void executeTest_WithIncorrectTableName() throws SQLException {
 //        given
         String tableName = "tableName";
-        String command = "clear|" + tableName;
         SQLException e = new SQLException("Input data does not correct.");
         doThrow(e).when(manager).clear(tableName);
         doNothing().when(view).write(anyString());
 //        when
-        clear.execute(command);
+        clear.execute("clear|" + tableName);
 //        then
         verify(manager, times(1)).clear(tableName);
         verify(view, times(1)).write(e.getMessage());
