@@ -26,18 +26,19 @@ public class Delete implements Command {
         String[] formatCommand = command.split("\\|");
 
         if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
-            String tableName = formatCommand[1];
-            String nameOfVerifiableColumn = formatCommand[2];
-            String valueOfVerifiableColumn = formatCommand[3];
-            try {
-                manager.delete(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn);
-                new Find(this.view, this.manager).execute("find|" + tableName);
-            } catch (SQLException e) {
-                view.write(e.getMessage());
-                view.write(CommandMessages.ENTER_NEXT_COMMAND);
-            }
+            executeDelete(formatCommand[1], formatCommand[2], formatCommand[3]);
         } else {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+        }
+    }
+
+    private void executeDelete(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn) {
+        try {
+            manager.delete(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn);
+            new Find(this.view, this.manager).execute("find|" + tableName);
+        } catch (SQLException e) {
+            view.write(e.getMessage());
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
     }
 }
