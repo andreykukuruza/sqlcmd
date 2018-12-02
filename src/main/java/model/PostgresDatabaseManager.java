@@ -100,13 +100,13 @@ public class PostgresDatabaseManager implements DatabaseManager {
 
 
     @Override
-    public void insert(String tableName, List<String> columnNames,
-                       List<String> columnValues) throws SQLException {
-        throwExceptionIfSizesOfListsNotEqual(columnNames, columnValues);
+    public void insert(String tableName, List<String> columnsNames,
+                       List<String> columnsValues) throws SQLException {
+        throwExceptionIfSizesOfListsNotEqual(columnsNames, columnsValues);
         throwExceptionIfNotConnected();
 
         try (Statement statement = connection.createStatement()) {
-            String sql = getSQLForInsertDataInTable(tableName, columnNames, columnValues);
+            String sql = getSQLForInsertDataInTable(tableName, columnsNames, columnsValues);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new SQLException(incorrectInputDataErrorMessage, e);
