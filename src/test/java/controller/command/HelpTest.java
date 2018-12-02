@@ -69,7 +69,7 @@ class HelpTest {
         verify(view, times(1)).write("\t\t\"column 1\" - name of the first column, \"value 1\" - value of the first column");
         verify(view, times(1)).write("\t\t\"column 2\" - name of the second column, \"value 2\" - value of the second column");
         verify(view, times(1)).write("\t\t\"column N\" - name of the N column, \"value N\" - value of the N column");
-        verify(view, times(1)).write("\t\tP.S. If one or more of your values are text, you need use special symbol '.");
+        verify(view, times(1)).write("\t\tP.S. If one or more of your values are text, you need to use special symbol '.");
         verify(view, times(1)).write("\t\tExample, insert|users|name|'some text'|password|'another text'");
 
         verify(view, times(1)).write("\t- update");

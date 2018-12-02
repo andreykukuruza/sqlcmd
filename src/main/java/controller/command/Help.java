@@ -57,7 +57,7 @@ public class Help implements Command {
         view.write("\t\t\"column 1\" - name of the first column, \"value 1\" - value of the first column");
         view.write("\t\t\"column 2\" - name of the second column, \"value 2\" - value of the second column");
         view.write("\t\t\"column N\" - name of the N column, \"value N\" - value of the N column");
-        view.write("\t\tP.S. If one or more of your values are text, you need use special symbol '.");
+        view.write("\t\tP.S. If one or more of your values are text, you need to use special symbol '.");
         view.write("\t\tExample, insert|users|name|'some text'|password|'another text'");
         view.write("");
 
