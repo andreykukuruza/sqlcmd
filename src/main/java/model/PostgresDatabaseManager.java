@@ -5,7 +5,7 @@ import java.util.*;
 
 public class PostgresDatabaseManager implements DatabaseManager {
     private Connection connection;
-    private String inputDataDoesNotCorrectErrorMessage = "Input data does not correct.";
+    private String incorrectInputDataErrorMessage = "Input data does not correct.";
 
     @Override
     public boolean isConnected() {
@@ -53,7 +53,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
             String sql = "DELETE FROM " + tableName + ";";
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
+            throw new SQLException(incorrectInputDataErrorMessage, e);
         }
     }
 
@@ -78,7 +78,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
                     + verifiableColumnValue + ";";
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
+            throw new SQLException(incorrectInputDataErrorMessage, e);
         }
     }
 
@@ -94,7 +94,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
                     verifiableColumnValue, updatableColumnsNames, updatableColumnsValues);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
+            throw new SQLException(incorrectInputDataErrorMessage, e);
         }
     }
 
@@ -109,7 +109,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
             String sql = getSQLForInsertDataInTable(tableName, columnNames, columnValues);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
+            throw new SQLException(incorrectInputDataErrorMessage, e);
         }
     }
 
@@ -129,7 +129,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
             }
             return result;
         } catch (SQLException e) {
-            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
+            throw new SQLException(incorrectInputDataErrorMessage, e);
         }
     }
 
@@ -149,7 +149,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
 
             return result;
         } catch (SQLException e) {
-            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
+            throw new SQLException(incorrectInputDataErrorMessage, e);
         }
     }
 
@@ -163,7 +163,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
             String sql = getSQLForCreatingNewTable(tableName, columnsNames, columnsTypes);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
+            throw new SQLException(incorrectInputDataErrorMessage, e);
         }
     }
 
@@ -175,7 +175,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
             String sql = "DROP TABLE " + tableName + ";";
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(inputDataDoesNotCorrectErrorMessage, e);
+            throw new SQLException(incorrectInputDataErrorMessage, e);
         }
     }
 
