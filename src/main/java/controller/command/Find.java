@@ -27,21 +27,23 @@ public class Find implements Command {
     @Override
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
-
         if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
-            String tableName = formatCommand[1];
-            try {
-                Set<String> columnNames = manager.getColumnsNamesInTable(tableName);
-                List<String> tableData = manager.getTableData(tableName);
-                TableFormatter table = new TableFormatter(columnNames, tableData);
-                view.write(table.getTableString());
-                view.write(CommandMessages.ENTER_NEXT_COMMAND);
-            } catch (SQLException e) {
-                view.write(e.getMessage());
-                view.write(CommandMessages.ENTER_NEXT_COMMAND);
-            }
+            executeFind(formatCommand[1]);
         } else {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+        }
+    }
+
+    private void executeFind(String tableName) {
+        try {
+            Set<String> columnNames = manager.getColumnsNamesInTable(tableName);
+            List<String> tableData = manager.getTableData(tableName);
+            TableFormatter table = new TableFormatter(columnNames, tableData);
+            view.write(table.getTableString());
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+        } catch (SQLException e) {
+            view.write(e.getMessage());
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
     }
 }
