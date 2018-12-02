@@ -42,7 +42,7 @@ class ExitTest {
     }
 
     @Test
-    void executeTest_WithIncorrectConnectionClosing() throws SQLException {
+    void executeTest_WithException() throws SQLException {
 //        given
         doThrow(new SQLException("Connection was not close.")).when(manager).exit();
 //        when
