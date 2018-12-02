@@ -26,22 +26,25 @@ public class Update implements Command {
     @Override
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
-
         if (isCorrectNumberOfParameters(formatCommand)) {
-            String tableName = formatCommand[1];
-            String nameOfVerifiableColumn = formatCommand[2];
-            String valueOfVerifiableColumn = formatCommand[3];
             List<String> namesOfUpdatableColumns = getNamesOfUpdatableColumns(formatCommand);
             List<String> valuesOfUpdatableColumns = getValuesOfUpdatableColumns(formatCommand);
-            try {
-                manager.update(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn, namesOfUpdatableColumns, valuesOfUpdatableColumns);
-                new Find(this.view, this.manager).execute("find|" + tableName);
-            } catch (SQLException e) {
-                view.write(e.getMessage());
-                view.write(CommandMessages.ENTER_NEXT_COMMAND);
-            }
+            executeUpdate(formatCommand[1], formatCommand[2], formatCommand[3],
+                    namesOfUpdatableColumns, valuesOfUpdatableColumns);
         } else {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+        }
+    }
+
+    private void executeUpdate(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn,
+                               List<String> namesOfUpdatableColumns, List<String> valuesOfUpdatableColumns) {
+        try {
+            manager.update(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn,
+                    namesOfUpdatableColumns, valuesOfUpdatableColumns);
+            new Find(this.view, this.manager).execute("find|" + tableName);
+        } catch (SQLException e) {
+            view.write(e.getMessage());
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
     }
 
