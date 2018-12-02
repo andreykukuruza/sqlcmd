@@ -25,15 +25,19 @@ public class Tables implements Command {
     public void execute(String command) {
         try {
             Set<String> tableNames = manager.tables();
-            if (tableNames.size() == 0) {
-                view.write("No tables inside this database.");
-                view.write(CommandMessages.ENTER_NEXT_COMMAND);
-            } else {
-                view.write(tableNames.toString());
-                view.write(CommandMessages.ENTER_NEXT_COMMAND);
-            }
+            writeTables(tableNames);
         } catch (SQLException e) {
             view.write(e.getMessage());
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+        }
+    }
+
+    private void writeTables(Set<String> tableNames) {
+        if (tableNames.size() == 0) {
+            view.write("No tables inside the database.");
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+        } else {
+            view.write(tableNames.toString());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
     }
