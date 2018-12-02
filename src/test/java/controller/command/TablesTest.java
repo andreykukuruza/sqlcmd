@@ -24,7 +24,7 @@ class TablesTest {
     @Mock
     private DatabaseManager manager;
     @InjectMocks
-    private Tables tables = new Tables(view, manager);
+    private Tables tables;
 
     @Test
     void canExecuteTest_WithCorrectCommandName() {

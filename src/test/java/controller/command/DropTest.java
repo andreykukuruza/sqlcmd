@@ -22,7 +22,7 @@ class DropTest {
     @Mock
     private DatabaseManager manager;
     @InjectMocks
-    private Drop drop = new Drop(view, manager);
+    private Drop drop;
 
     @Test
     void canExecuteTest_WithCorrectCommandName() {

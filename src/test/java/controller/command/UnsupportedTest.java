@@ -16,7 +16,7 @@ class UnsupportedTest {
     @Mock
     private View view;
     @InjectMocks
-    private Unsupported unsupported = new Unsupported(view);
+    private Unsupported unsupported;
 
     @Test
     void canExecuteTest() {

@@ -25,7 +25,7 @@ class FindTest {
     @Mock
     private DatabaseManager manager;
     @InjectMocks
-    private Find find = new Find(view, manager);
+    private Find find;
 
     @Test
     void canExecuteTest_WithCorrectCommandName() {

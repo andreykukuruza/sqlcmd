@@ -24,7 +24,7 @@ class CreateTest {
     @Mock
     private DatabaseManager manager;
     @InjectMocks
-    private Create create = new Create(view, manager);
+    private Create create;
 
     @Test
     void canExecuteTest_WithCorrectCommandName() {

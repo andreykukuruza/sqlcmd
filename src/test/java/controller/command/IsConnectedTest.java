@@ -20,7 +20,7 @@ class IsConnectedTest {
     @Mock
     private DatabaseManager manager;
     @InjectMocks
-    private IsConnected isConnected = new IsConnected(view, manager);
+    private IsConnected isConnected;
 
     @Test
     void canExecuteTest_IfConnected() {

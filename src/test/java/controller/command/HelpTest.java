@@ -17,7 +17,7 @@ class HelpTest {
     @Mock
     private View view;
     @InjectMocks
-    private Help help = new Help(view);
+    private Help help;
 
     @Test
     void canExecuteTest_WithCorrectCommandName() {

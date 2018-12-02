@@ -21,7 +21,7 @@ class ExitTest {
     @Mock
     private DatabaseManager manager;
     @InjectMocks
-    private Exit exit = new Exit(view, manager);
+    private Exit exit;
 
     @Test
     void canExecuteTest_WithCorrectCommandName() {

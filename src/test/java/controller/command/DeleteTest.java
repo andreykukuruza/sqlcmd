@@ -24,7 +24,7 @@ class DeleteTest {
     @Mock
     private DatabaseManager manager;
     @InjectMocks
-    private Delete delete = new Delete(view, manager);
+    private Delete delete;
 
     @Test
     void canExecuteTest_WithCorrectCommandName() {
