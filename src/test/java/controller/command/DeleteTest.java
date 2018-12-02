@@ -93,38 +93,15 @@ class DeleteTest {
     }
 
     @Test
-    void executeTest_WithIncorrectTableName() throws SQLException {
+    void executeTest_WithAnyException() throws SQLException {
 //        given
-        doThrow(new SQLException("Input data does not correct.")).when(manager)
+        SQLException e = new SQLException("Any exception");
+        doThrow(e).when(manager)
                 .delete("WrongTableName", "ColumnName", "Value");
 //        when
         delete.execute("delete|WrongTableName|ColumnName|Value");
 //        then
-        verify(view, times(1)).write("Input data does not correct.");
-        verify(view, times(1)).write(CommandMessages.ENTER_NEXT_COMMAND);
-    }
-
-    @Test
-    void executeTest_WithIncorrectColumnName() throws SQLException {
-//        given
-        doThrow(new SQLException("Input data does not correct.")).when(manager)
-                .delete("TableName", "WrongColumnName", "Value");
-//        when
-        delete.execute("delete|TableName|WrongColumnName|Value");
-//        then
-        verify(view, times(1)).write("Input data does not correct.");
-        verify(view, times(1)).write(CommandMessages.ENTER_NEXT_COMMAND);
-    }
-
-    @Test
-    void executeTest_WithIncorrectColumnType() throws SQLException {
-//        given
-        doThrow(new SQLException("Input data does not correct.")).when(manager)
-                .delete("TableName", "ColumnName", "WrongTypeOfValue");
-//        when
-        delete.execute("delete|TableName|ColumnName|WrongTypeOfValue");
-//        then
-        verify(view, times(1)).write("Input data does not correct.");
+        verify(view, times(1)).write(e.getMessage());
         verify(view, times(1)).write(CommandMessages.ENTER_NEXT_COMMAND);
     }
 }
