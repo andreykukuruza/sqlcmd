@@ -26,20 +26,23 @@ public class Insert implements Command {
     @Override
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
-
         if (isCorrectNumberOfParameters(formatCommand)) {
-            String tableName = formatCommand[1];
             List<String> columnNames = getColumnNames(formatCommand);
             List<String> columnValues = getColumnValues(formatCommand);
-            try {
-                manager.insert(tableName, columnNames, columnValues);
-                view.write("Data was successful insert in the table.");
-            } catch (SQLException e) {
-                view.write(e.getMessage());
-                view.write(CommandMessages.ENTER_NEXT_COMMAND);
-            }
+            executeInsert(formatCommand[1], columnNames, columnValues);
         } else {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+        }
+    }
+
+    private void executeInsert(String tableName, List<String> columnNames, List<String> columnValues) {
+        try {
+            manager.insert(tableName, columnNames, columnValues);
+            view.write("Data was successful insert in the table.");
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+        } catch (SQLException e) {
+            view.write(e.getMessage());
+            view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
     }
 
