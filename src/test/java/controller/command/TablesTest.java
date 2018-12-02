@@ -62,7 +62,7 @@ class TablesTest {
     }
 
     @Test
-    void executeTest_IfException() throws SQLException {
+    void executeTest_WithAnyException() throws SQLException {
 //        given
         when(manager.tables()).thenThrow(new SQLException("Any error message"));
 //        when
