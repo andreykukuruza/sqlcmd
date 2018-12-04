@@ -10,7 +10,7 @@ public class Controller {
 
     public Controller(View view, DatabaseManager manager) {
         this.view = view;
-        this.commands = new Command[] {
+        this.commands = new Command[]{
                 new Connect(view, manager),
                 new Exit(view, manager),
                 new Help(view),
@@ -24,21 +24,25 @@ public class Controller {
                 new Update(view, manager),
                 new Clear(view, manager),
                 new Unsupported(view)
-                };
+        };
     }
 
     public void run() {
         view.write("Hello! It is SQLCmd! Enter command or help:");
         String inputCommand = view.read();
         while (!inputCommand.equals("exit")) {
-            for (Command command: commands) {
-                if (command.canExecute(inputCommand)) {
-                    command.execute(inputCommand);
-                    break;
-                }
-            }
+            executeCommand(inputCommand);
             inputCommand = view.read();
         }
-        commands[1].execute("exit"); //Следить за индексом комманды exit в массиве Command[]!!!
+        commands[1].execute("exit");
+    }
+
+    private void executeCommand(String inputCommand) {
+        for (Command command : commands) {
+            if (command.canExecute(inputCommand)) {
+                command.execute(inputCommand);
+                break;
+            }
+        }
     }
 }
