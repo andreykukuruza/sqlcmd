@@ -37,7 +37,8 @@ public class PostgresDatabaseManager implements DatabaseManager {
                 "AND table_schema IN('public');";
         Set<String> tableNames = new HashSet<>();
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+             ResultSet resultSet = statement.executeQuery(sql))
+        {
             while (resultSet.next()) {
                 tableNames.add(resultSet.getString(1));
             }
@@ -48,7 +49,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
     @Override
     public void clear(String tableName) throws SQLException {
         throwExceptionIfNotConnected();
-
         try (Statement statement = connection.createStatement()) {
             String sql = "DELETE FROM " + tableName + ";";
             statement.executeUpdate(sql);
@@ -72,7 +72,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
     public void delete(String tableName, String verifiableColumnName,
                        String verifiableColumnValue) throws SQLException {
         throwExceptionIfNotConnected();
-
         try (Statement statement = connection.createStatement()) {
             String sql = "DELETE FROM " + tableName + " WHERE " + verifiableColumnName + " = "
                     + verifiableColumnValue + ";";
@@ -88,7 +87,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
                        List<String> updatableColumnsValues) throws SQLException {
         throwExceptionIfSizesOfListsNotEqual(updatableColumnsNames, updatableColumnsValues);
         throwExceptionIfNotConnected();
-
         try (Statement statement = connection.createStatement()) {
             String sql = getSQLForUpdatingData(tableName, verifiableColumnName,
                     verifiableColumnValue, updatableColumnsNames, updatableColumnsValues);
@@ -104,7 +102,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
                        List<String> columnsValues) throws SQLException {
         throwExceptionIfSizesOfListsNotEqual(columnsNames, columnsValues);
         throwExceptionIfNotConnected();
-
         try (Statement statement = connection.createStatement()) {
             String sql = getSQLForInsertDataInTable(tableName, columnsNames, columnsValues);
             statement.executeUpdate(sql);
@@ -116,7 +113,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
     @Override
     public List<String> getTableData(String tableName) throws SQLException {
         throwExceptionIfNotConnected();
-
         String sql = "SELECT * FROM public." + tableName + ";";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
@@ -136,17 +132,15 @@ public class PostgresDatabaseManager implements DatabaseManager {
     @Override
     public Set<String> getColumnsNamesInTable(String tableName) throws SQLException {
         throwExceptionIfNotConnected();
-
         String sql = "SELECT * FROM public." + tableName + ";";
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+             ResultSet resultSet = statement.executeQuery(sql))
+        {
             Set<String> result = new LinkedHashSet<>();
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-
             for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
                 result.add(resultSetMetaData.getColumnName(i + 1));
             }
-
             return result;
         } catch (SQLException e) {
             throw new SQLException(incorrectInputDataErrorMessage, e);
@@ -158,7 +152,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
                        List<String> columnsTypes) throws SQLException {
         throwExceptionIfSizesOfListsNotEqual(columnsNames, columnsTypes);
         throwExceptionIfNotConnected();
-
         try (Statement statement = connection.createStatement()) {
             String sql = getSQLForCreatingNewTable(tableName, columnsNames, columnsTypes);
             statement.executeUpdate(sql);
@@ -170,7 +163,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
     @Override
     public void drop(String tableName) throws SQLException {
         throwExceptionIfNotConnected();
-
         try (Statement statement = connection.createStatement()) {
             String sql = "DROP TABLE " + tableName + ";";
             statement.executeUpdate(sql);
@@ -182,7 +174,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
     private String getSQLForCreatingNewTable(String tableName, List<String> columnsNames,
                                              List<String> columnsTypes) {
         StringBuilder sql = new StringBuilder("CREATE TABLE public." + tableName + " (");
-
         if (columnsNames.size() != 0) {
             for (int i = 0; i < columnsNames.size() - 1; i++) {
                 sql.append(columnsNames.get(i)).append(" ").append(columnsTypes.get(i)).append(", ");

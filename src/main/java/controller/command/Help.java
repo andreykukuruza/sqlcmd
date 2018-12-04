@@ -63,7 +63,9 @@ public class Help implements Command {
 
         view.write("\t- update");
         view.write("\t\tYou can use it for updating data in columns.");
-        view.write("\t\tFormat: update|table name|name of verifiable column|value of verifiable column|name of updatable column 1|value of updatable column 1|...|name of updatable column N|value of updatable column N");
+        view.write("\t\tFormat: update|table name|name of verifiable column|value of verifiable column" +
+                "|name of updatable column 1|value of updatable column 1|..." +
+                "|name of updatable column N|value of updatable column N");
         view.write("");
 
         view.write("\t- delete");

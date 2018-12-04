@@ -24,7 +24,6 @@ public class Delete implements Command {
     @Override
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
-
         if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
             executeDelete(formatCommand[1], formatCommand[2], formatCommand[3]);
         } else {
