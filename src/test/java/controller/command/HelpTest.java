@@ -74,7 +74,7 @@ class HelpTest {
 
         verify(view, times(1)).write("\t- update");
         verify(view, times(1)).write("\t\tYou can use it for updating data in columns.");
-        verify(view, times(1)).write("\t\tFormat: update|table name|name of verifiable column|value of verifiable column|name of updatable column 1|value of updatable column 1|...|name of updatable column N|value of updatable column N|");
+        verify(view, times(1)).write("\t\tFormat: update|table name|name of verifiable column|value of verifiable column|name of updatable column 1|value of updatable column 1|...|name of updatable column N|value of updatable column N");
 
         verify(view, times(1)).write("\t- delete");
         verify(view, times(1)).write("\t\tYou can use it for deleting data in the table with parameters.");
