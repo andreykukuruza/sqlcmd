@@ -1,0 +1,52 @@
+We have commands:
+    - connect
+        You can use it for connection to database.
+        Format: connect|database name|username|password
+
+    - tables
+        You can use it for watching all tables in database.
+        Format: tables
+
+    - clear
+        You can use it for clearing all data in the table.
+        Format: clear|table name
+
+    - drop
+        You can use it for deleting the table.
+        Format: drop|table name
+
+    - create
+        You can use it for creating the table with any number of columns.
+        Format: create|table Name|column 1|type 1|column 2|type 2|...|column N|type N
+        "table Name" - name of new table.
+        "column 1|column 2|...|column N" - names of columns in new table.
+        "type 1|type 2|...|type N" - data types of columns in new table.
+
+    - find
+        You can use it for watching data in the table.
+        Format: find|table name
+
+    - insert
+        You can use it for inserting the row in the table.
+        Format: insert|table name|column 1|value 1|column 2|value 2|...|column N|value N
+        "column 1" - name of the first column, \"value 1\" - value of the first column
+        "column 2" - name of the second column, \"value 2\" - value of the second column
+        "column N" - name of the N column, \"value N\" - value of the N column
+        P.S. If one or more of your values are text, you need to use special symbol '.
+        Example, insert|users|name|'some text'|password|'another text'
+
+    - update
+        You can use it for updating data in columns.
+        Format: update|table name|name of verifiable column|value of verifiable column|name of updatable column 1|value of updatable column 1|...|name of updatable column N|value of updatable column N
+
+    - delete
+        You can use it for deleting data in the table with parameters.
+        Format: delete|table name|name of verifiable column|value of verifiable column
+
+    - help
+        You can use it for watching all commands and their describes in SQLCmd.
+        Format: help
+
+    - exit
+        You can use it for correct exiting from SQLCmd.
+        Format: exit
