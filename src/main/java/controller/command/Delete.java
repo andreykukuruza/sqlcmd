@@ -1,10 +1,9 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
-
-import java.sql.SQLException;
 
 public class Delete implements Command {
     private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
@@ -35,7 +34,7 @@ public class Delete implements Command {
         try {
             manager.delete(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn);
             new Find(this.view, this.manager).execute("find|" + tableName);
-        } catch (SQLException e) {
+        } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }

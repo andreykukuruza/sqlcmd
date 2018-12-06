@@ -1,10 +1,10 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 
-import java.sql.SQLException;
 import java.util.Set;
 
 public class Tables implements Command {
@@ -26,7 +26,7 @@ public class Tables implements Command {
         try {
             Set<String> tableNames = manager.tables();
             writeTables(tableNames);
-        } catch (SQLException e) {
+        } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }

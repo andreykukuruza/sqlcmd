@@ -1,10 +1,10 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class Insert implements Command {
             manager.insert(tableName, columnNames, columnValues);
             view.write("Data was successful insert in the table.");
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
-        } catch (SQLException e) {
+        } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }

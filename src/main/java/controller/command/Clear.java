@@ -1,10 +1,9 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
-
-import java.sql.SQLException;
 
 public class Clear implements Command {
     private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
@@ -35,7 +34,7 @@ public class Clear implements Command {
         try {
             manager.clear(tableName);
             view.write("Table " + tableName + " was cleared. Enter next command or help:");
-        } catch (SQLException e) {
+        } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }

@@ -1,9 +1,8 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import model.DatabaseManager;
 import view.View;
-
-import java.sql.SQLException;
 
 public class Exit implements Command {
     private View view;
@@ -24,7 +23,7 @@ public class Exit implements Command {
         try {
             manager.exit();
             view.write("Goodbye!");
-        } catch (SQLException e) {
+        } catch (DatabaseManagerException e) {
             view.write(e.getMessage() + " Goodbye!");
         }
     }

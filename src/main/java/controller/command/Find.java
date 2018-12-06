@@ -1,11 +1,11 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import controller.command.util.TableFormatter;
 import model.DatabaseManager;
 import view.View;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -41,7 +41,7 @@ public class Find implements Command {
             TableFormatter table = new TableFormatter(columnNames, tableData);
             view.write(table.getTableString());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
-        } catch (SQLException e) {
+        } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }

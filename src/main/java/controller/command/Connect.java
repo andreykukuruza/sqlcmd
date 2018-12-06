@@ -1,10 +1,9 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
-
-import java.sql.SQLException;
 
 public class Connect implements Command {
     private static final int NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
@@ -35,7 +34,7 @@ public class Connect implements Command {
         try {
             manager.connect(databaseName, username, password);
             view.write("Connect is successful. Enter next command or help:");
-        } catch (SQLException e) {
+        } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
