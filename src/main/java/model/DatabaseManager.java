@@ -1,31 +1,31 @@
 package model;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
 public interface DatabaseManager {
     boolean isConnected();
 
-    void connect(String databaseName, String username, String password) throws SQLException;
+    void connect(String databaseName, String username, String password);
 
-    Set<String> tables() throws SQLException;
+    Set<String> tables();
 
-    void clear(String tableName) throws SQLException;
+    void clear(String tableName);
 
-    void exit() throws SQLException;
+    void exit();
 
-    void delete(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn) throws SQLException;
+    void delete(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn);
 
-    void update(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn, List<String> namesOfUpdatableColumns, List<String> valuesOfUpdatableColumns) throws SQLException;
+    void update(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn,
+                List<String> namesOfUpdatableColumns, List<String> valuesOfUpdatableColumns);
 
-    void insert(String tableName, List<String> columnNames, List<String> columnValues) throws SQLException;
+    void insert(String tableName, List<String> columnNames, List<String> columnValues);
 
-    List<String> getTableData(String tableName) throws SQLException;
+    List<String> getTableData(String tableName);
 
-    Set<String> getColumnsNamesInTable(String tableName) throws SQLException;
+    Set<String> getColumnsNamesInTable(String tableName);
 
-    void create(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) throws SQLException;
+    void create(String tableName, List<String> namesOfColumns, List<String> typesOfColumns);
 
-    void drop(String tableName) throws SQLException;
+    void drop(String tableName);
 }

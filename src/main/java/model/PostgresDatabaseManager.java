@@ -1,5 +1,7 @@
 package model;
 
+import controller.command.exception.DatabaseManagerException;
+
 import java.sql.*;
 import java.util.*;
 
@@ -13,24 +15,24 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void connect(String databaseName, String userName, String password) throws SQLException {
+    public void connect(String databaseName, String userName, String password) {
         closeIfWasConnected();
         String url = "jdbc:postgresql://localhost:5432/" + databaseName;
         try {
             connection = DriverManager.getConnection(url, userName, password);
         } catch (SQLException e) {
             if (e.getMessage().equals("FATAL: password authentication failed for user \"" + userName + "\"")) {
-                throw new SQLException("Username or password are incorrect.", e);
+                throw new DatabaseManagerException("Username or password are incorrect.", e);
             } else if (e.getMessage().equals("FATAL: database \"" + databaseName + "\" does not exist")) {
-                throw new SQLException("Database " + databaseName + " does not exist.", e);
+                throw new DatabaseManagerException("Database " + databaseName + " does not exist.", e);
             } else {
-                throw new SQLException("Houston, we have a problem!...", e);
+                throw new DatabaseManagerException("Houston, we have a problem!...", e);
             }
         }
     }
 
     @Override
-    public Set<String> tables() throws SQLException {
+    public Set<String> tables() {
         throwExceptionIfNotConnected();
         String sql = "SELECT table_name FROM information_schema.tables\n" +
                 "WHERE table_schema NOT IN ('information_schema', 'pg_catalog')\n" +
@@ -43,48 +45,49 @@ public class PostgresDatabaseManager implements DatabaseManager {
                 tableNames.add(resultSet.getString(1));
             }
             return tableNames;
+        } catch (SQLException e) {
+            throw new DatabaseManagerException();
         }
     }
 
     @Override
-    public void clear(String tableName) throws SQLException {
+    public void clear(String tableName) {
         throwExceptionIfNotConnected();
         try (Statement statement = connection.createStatement()) {
             String sql = "DELETE FROM " + tableName + ";";
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(incorrectInputDataErrorMessage, e);
+            throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
         }
     }
 
     @Override
-    public void exit() throws SQLException {
+    public void exit() {
         if (isConnected()) {
             try {
                 connection.close();
             } catch (SQLException e) {
-                throw new SQLException("Connection was not close.", e);
+                throw new DatabaseManagerException("Connection was not close.", e);
             }
         }
     }
 
     @Override
-    public void delete(String tableName, String verifiableColumnName,
-                       String verifiableColumnValue) throws SQLException {
+    public void delete(String tableName, String verifiableColumnName, String verifiableColumnValue) {
         throwExceptionIfNotConnected();
         try (Statement statement = connection.createStatement()) {
             String sql = "DELETE FROM " + tableName + " WHERE " + verifiableColumnName + " = "
                     + verifiableColumnValue + ";";
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(incorrectInputDataErrorMessage, e);
+            throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
         }
     }
 
     @Override
     public void update(String tableName, String verifiableColumnName,
                        String verifiableColumnValue, List<String> updatableColumnsNames,
-                       List<String> updatableColumnsValues) throws SQLException {
+                       List<String> updatableColumnsValues) {
         throwExceptionIfSizesOfListsNotEqual(updatableColumnsNames, updatableColumnsValues);
         throwExceptionIfNotConnected();
         try (Statement statement = connection.createStatement()) {
@@ -92,26 +95,26 @@ public class PostgresDatabaseManager implements DatabaseManager {
                     verifiableColumnValue, updatableColumnsNames, updatableColumnsValues);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(incorrectInputDataErrorMessage, e);
+            throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
         }
     }
 
 
     @Override
     public void insert(String tableName, List<String> columnsNames,
-                       List<String> columnsValues) throws SQLException {
+                       List<String> columnsValues) {
         throwExceptionIfSizesOfListsNotEqual(columnsNames, columnsValues);
         throwExceptionIfNotConnected();
         try (Statement statement = connection.createStatement()) {
             String sql = getSQLForInsertDataInTable(tableName, columnsNames, columnsValues);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(incorrectInputDataErrorMessage, e);
+            throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
         }
     }
 
     @Override
-    public List<String> getTableData(String tableName) throws SQLException {
+    public List<String> getTableData(String tableName) {
         throwExceptionIfNotConnected();
         String sql = "SELECT * FROM public." + tableName + ";";
         try (Statement statement = connection.createStatement();
@@ -125,12 +128,12 @@ public class PostgresDatabaseManager implements DatabaseManager {
             }
             return result;
         } catch (SQLException e) {
-            throw new SQLException(incorrectInputDataErrorMessage, e);
+            throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
         }
     }
 
     @Override
-    public Set<String> getColumnsNamesInTable(String tableName) throws SQLException {
+    public Set<String> getColumnsNamesInTable(String tableName) {
         throwExceptionIfNotConnected();
         String sql = "SELECT * FROM public." + tableName + ";";
         try (Statement statement = connection.createStatement();
@@ -143,31 +146,31 @@ public class PostgresDatabaseManager implements DatabaseManager {
             }
             return result;
         } catch (SQLException e) {
-            throw new SQLException(incorrectInputDataErrorMessage, e);
+            throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
         }
     }
 
     @Override
     public void create(String tableName, List<String> columnsNames,
-                       List<String> columnsTypes) throws SQLException {
+                       List<String> columnsTypes) {
         throwExceptionIfSizesOfListsNotEqual(columnsNames, columnsTypes);
         throwExceptionIfNotConnected();
         try (Statement statement = connection.createStatement()) {
             String sql = getSQLForCreatingNewTable(tableName, columnsNames, columnsTypes);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(incorrectInputDataErrorMessage, e);
+            throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
         }
     }
 
     @Override
-    public void drop(String tableName) throws SQLException {
+    public void drop(String tableName) {
         throwExceptionIfNotConnected();
         try (Statement statement = connection.createStatement()) {
             String sql = "DROP TABLE " + tableName + ";";
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            throw new SQLException(incorrectInputDataErrorMessage, e);
+            throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
         }
     }
 
@@ -217,18 +220,18 @@ public class PostgresDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void throwExceptionIfNotConnected() throws SQLException {
+    private void throwExceptionIfNotConnected() {
         if (!isConnected()) {
-            throw new SQLException("You are not connected to database.");
+            throw new DatabaseManagerException("You are not connected to database.");
         }
     }
 
-    private void closeIfWasConnected() throws SQLException {
+    private void closeIfWasConnected() {
         if (isConnected()) {
             try {
                 connection.close();
             } catch (SQLException e) {
-                throw new SQLException("Previous connection was not close. Try again or reset SQLCmd.", e);
+                throw new DatabaseManagerException("Previous connection was not close. Try again or reset SQLCmd.", e);
             }
         }
     }
