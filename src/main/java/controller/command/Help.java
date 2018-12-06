@@ -4,10 +4,10 @@ import controller.command.util.CommandMessages;
 import view.View;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 public class Help implements Command {
     private View view;
@@ -25,10 +25,7 @@ public class Help implements Command {
     public void execute(String command) {
         Path path = Paths.get("src/main/resources/help.txt");
         try {
-            List<String> help = Files.readAllLines(path);
-            for (String string: help) {
-                view.write(string);
-            }
+            view.write(new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         } catch (IOException e) {
             view.write(e.getMessage());
