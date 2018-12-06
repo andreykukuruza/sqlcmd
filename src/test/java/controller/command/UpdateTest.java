@@ -1,5 +1,6 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -38,7 +38,7 @@ class UpdateTest {
     }
 
     @Test
-    void executeTest_WithCorrectParametersInCommand() throws SQLException {
+    void executeTest_WithCorrectParametersInCommand() {
 //        given
         String tableName = "TableName";
         when(manager.getColumnsNamesInTable(tableName))
@@ -72,9 +72,9 @@ class UpdateTest {
     }
 
     @Test
-    void executeTest_WithAnyException() throws SQLException {
+    void executeTest_WithAnyException() {
 //        given
-        SQLException e = new SQLException("Any Exception");
+        DatabaseManagerException e = new DatabaseManagerException("Any Exception");
         doThrow(e).when(manager).update(anyString(), anyString(),anyString(), anyList(), anyList());
 //        when
         update.execute("update|TableName|VerifiableColumnName|VerifiableValue|ColumnName1|Value1");

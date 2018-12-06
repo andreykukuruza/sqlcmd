@@ -1,5 +1,6 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -37,7 +37,7 @@ class CreateTest {
     }
 
     @Test
-    void executeTest_WithCorrectParametersInCommand() throws SQLException {
+    void executeTest_WithCorrectParametersInCommand() {
 //        when
         create.execute("create|TableName|ColumnName1|ColumnValue1|ColumnName2|ColumnValue2");
 //        then
@@ -57,7 +57,7 @@ class CreateTest {
     }
 
     @Test
-    void executeTest_WithoutColumns() throws SQLException {
+    void executeTest_WithoutColumns() {
 //        when
         create.execute("create|TableName");
 //        then
@@ -75,9 +75,9 @@ class CreateTest {
     }
 
     @Test
-    void executeTest_WithIncorrectTableName() throws SQLException {
+    void executeTest_WithIncorrectTableName() {
 //        given
-        SQLException e = new SQLException("Input data does not correct.");
+        DatabaseManagerException e = new DatabaseManagerException("Input data does not correct.");
         doThrow(e).when(manager).create("WrongTableName",
                 Arrays.asList("ColumnName1", "ColumnName2"),
                 Arrays.asList("ColumnValue1", "ColumnValue2"));

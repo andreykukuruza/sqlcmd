@@ -1,5 +1,6 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -37,7 +37,7 @@ class DeleteTest {
     }
 
     @Test
-    void executeTest_WithCorrectParametersInCommand() throws SQLException {
+    void executeTest_WithCorrectParametersInCommand() {
 //        given
         String tableName = "TableName";
         when(manager.getColumnsNamesInTable(tableName))
@@ -93,9 +93,9 @@ class DeleteTest {
     }
 
     @Test
-    void executeTest_WithAnyException() throws SQLException {
+    void executeTest_WithAnyException() {
 //        given
-        SQLException e = new SQLException("Any exception");
+        DatabaseManagerException e = new DatabaseManagerException("Any exception");
         doThrow(e).when(manager)
                 .delete("WrongTableName", "ColumnName", "Value");
 //        when

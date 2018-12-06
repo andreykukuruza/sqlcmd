@@ -1,5 +1,6 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import org.junit.jupiter.api.Test;
@@ -8,8 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
-
-import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,7 +34,7 @@ class ConnectTest {
     }
 
     @Test
-    void executeTest_WithCorrectParametersInCommand() throws SQLException {
+    void executeTest_WithCorrectParametersInCommand() {
 //        when
         connect.execute("connect|TestDatabaseName|TestUserName|TestPassword");
 //        then
@@ -78,9 +77,9 @@ class ConnectTest {
     }
 
     @Test
-    void executeTest_WithIncorrectDatabaseName() throws SQLException {
+    void executeTest_WithIncorrectDatabaseName() {
 //        given
-        doThrow(new SQLException("Database WrongDatabaseName does not exist."))
+        doThrow(new DatabaseManagerException("Database WrongDatabaseName does not exist."))
                 .when(manager)
                 .connect("WrongDatabaseName", "TestUserName", "TestPassword");
 //        when
@@ -93,9 +92,9 @@ class ConnectTest {
     }
 
     @Test
-    void executeTest_WithIncorrectPassword() throws SQLException {
+    void executeTest_WithIncorrectPassword() {
 //        given
-        doThrow(new SQLException("Username or password are incorrect."))
+        doThrow(new DatabaseManagerException("Username or password are incorrect."))
                 .when(manager)
                 .connect("TestDatabaseName", "TestUserName", "WrongPassword");
 //        when
@@ -108,9 +107,9 @@ class ConnectTest {
     }
 
     @Test
-    void executeTest_WithIncorrectUserName() throws SQLException {
+    void executeTest_WithIncorrectUserName() {
 //        given
-        doThrow(new SQLException("Username or password are incorrect."))
+        doThrow(new DatabaseManagerException("Username or password are incorrect."))
                 .when(manager)
                 .connect("TestDatabaseName", "WrongUserName", "TestPassword");
 //        when

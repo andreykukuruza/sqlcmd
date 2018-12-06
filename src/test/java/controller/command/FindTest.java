@@ -1,5 +1,6 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -38,7 +38,7 @@ class FindTest {
     }
 
     @Test
-    void executeTest_WithCorrectTableName() throws SQLException {
+    void executeTest_WithCorrectTableName() {
 //        given
         String tableName = "TableName";
         when(manager.getColumnsNamesInTable(tableName))
@@ -60,7 +60,7 @@ class FindTest {
     }
 
     @Test
-    void executeTest_WithEmptyDataInTable() throws SQLException {
+    void executeTest_WithEmptyDataInTable() {
 //        given
         String tableName = "TableName";
         when(manager.getColumnsNamesInTable(tableName))
@@ -79,7 +79,7 @@ class FindTest {
     }
 
     @Test
-    void executeTest_WithoutColumns() throws SQLException {
+    void executeTest_WithoutColumns() {
 //        given
         String tableName = "TableName";
         when(manager.getColumnsNamesInTable(tableName))
@@ -96,10 +96,10 @@ class FindTest {
     }
 
     @Test
-    void executeTest_WithIncorrectTableName() throws SQLException {
+    void executeTest_WithIncorrectTableName() {
 //        given
         String tableName = "TableName";
-        SQLException e = new SQLException("Input data does not correct.");
+        DatabaseManagerException e = new DatabaseManagerException("Input data does not correct.");
         when(manager.getColumnsNamesInTable(tableName)).thenThrow(e);
 //        when
         find.execute("find|" + tableName);

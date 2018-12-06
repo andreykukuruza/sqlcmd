@@ -1,5 +1,6 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -36,7 +36,7 @@ class InsertTest {
     }
 
     @Test
-    void executeTest_WithCorrectParametersInCommand() throws SQLException {
+    void executeTest_WithCorrectParametersInCommand() {
 //        when
         insert.execute("insert|TableName|ColumnName1|ColumnValue1|ColumnName2|ColumnValue2");
 //        then
@@ -65,9 +65,9 @@ class InsertTest {
     }
 
     @Test
-    void executeTest_WithAnyException() throws SQLException {
+    void executeTest_WithAnyException() {
 //        given
-        SQLException e = new SQLException("Any exception");
+        DatabaseManagerException e = new DatabaseManagerException("Any exception");
         doThrow(e).when(manager).insert("WrongTableName",
                 Arrays.asList("ColumnName1", "ColumnName2"),
                 Arrays.asList("ColumnValue1", "ColumnValue2"));

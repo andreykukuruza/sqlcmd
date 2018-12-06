@@ -1,11 +1,11 @@
 package model;
 
 import config.Config;
+import controller.command.exception.DatabaseManagerException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,13 +18,13 @@ class PostgresDatabaseManagerConnectionTest {
     }
 
     @AfterEach
-    void tearDown() throws SQLException {
+    void tearDown() {
         manager.exit();
     }
 
     @Test
     void connectWithAllWrongParametersTest() {
-        SQLException e = assertThrows(SQLException.class, () -> manager.connect(
+        DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.connect(
                 "WrongDatabaseName",
                 "WrongUserName",
                 "WrongPassword"));
@@ -33,7 +33,7 @@ class PostgresDatabaseManagerConnectionTest {
 
     @Test
     void connectWithWrongPasswordTest() {
-        SQLException e = assertThrows(SQLException.class, () -> manager.connect(
+        DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.connect(
                 Config.getDatabaseName(),
                 Config.getUserName(),
                 "WrongPassword"));
@@ -42,7 +42,7 @@ class PostgresDatabaseManagerConnectionTest {
 
     @Test
     void connectWithWrongUserNameTest() {
-        SQLException e = assertThrows(SQLException.class, () -> manager.connect(
+        DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.connect(
                 Config.getDatabaseName(),
                 "WrongUserName",
                 Config.getPassword()));
@@ -51,7 +51,7 @@ class PostgresDatabaseManagerConnectionTest {
 
     @Test
     void connectWithWrongDatabaseNameTest() {
-        SQLException e = assertThrows(SQLException.class, () -> manager.connect(
+        DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.connect(
                 "WrongDatabaseName",
                 Config.getUserName(),
                 Config.getPassword()));
@@ -65,7 +65,7 @@ class PostgresDatabaseManagerConnectionTest {
                     Config.getDatabaseName(),
                     Config.getUserName(),
                     Config.getPassword());
-        } catch (SQLException e) {
+        } catch (DatabaseManagerException e) {
             fail("Fail connecting with correct parameters.");
         }
     }
@@ -78,7 +78,7 @@ class PostgresDatabaseManagerConnectionTest {
                     Config.getDatabaseName(),
                     Config.getUserName(),
                     Config.getPassword());
-        } catch (SQLException e) {
+        } catch (DatabaseManagerException e) {
             fail("Fail connecting with correct parameters.");
         }
 
@@ -88,13 +88,13 @@ class PostgresDatabaseManagerConnectionTest {
                     Config.getDatabaseName(),
                     Config.getUserName(),
                     Config.getPassword());
-        } catch (SQLException e) {
+        } catch (DatabaseManagerException e) {
             fail("Fail connecting with correct parameters.");
         }
     }
 
     @Test
-    void isConnectedTest() throws SQLException {
+    void isConnectedTest() {
 //        given
         manager.connect(
                 Config.getDatabaseName(),

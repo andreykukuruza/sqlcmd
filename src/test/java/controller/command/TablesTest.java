@@ -1,5 +1,6 @@
 package controller.command;
 
+import controller.command.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -37,7 +37,7 @@ class TablesTest {
     }
 
     @Test
-    void executeTest_WithSomeTablesInDatabase() throws SQLException {
+    void executeTest_WithSomeTablesInDatabase() {
 //        given
         when(manager.tables()).thenReturn(new HashSet<>(Arrays.asList("TableName1", "TableName2")));
 //        when
@@ -50,7 +50,7 @@ class TablesTest {
     }
 
     @Test
-    void executeTest_WithoutTablesInDatabase() throws SQLException {
+    void executeTest_WithoutTablesInDatabase() {
 //        given
         when(manager.tables()).thenReturn(new HashSet<>());
 //        when
@@ -62,9 +62,9 @@ class TablesTest {
     }
 
     @Test
-    void executeTest_WithAnyException() throws SQLException {
+    void executeTest_WithAnyException() {
 //        given
-        when(manager.tables()).thenThrow(new SQLException("Any error message"));
+        when(manager.tables()).thenThrow(new DatabaseManagerException("Any error message"));
 //        when
         tables.execute("tables");
 //        then
