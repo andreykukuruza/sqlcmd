@@ -4,13 +4,17 @@ import controller.command.*;
 import model.DatabaseManager;
 import view.View;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Controller {
     private View view;
-    private Command[] commands;
+    private List<Command> commands;
 
     public Controller(View view, DatabaseManager manager) {
         this.view = view;
-        this.commands = new Command[]{
+        this.commands = new ArrayList<>(Arrays.asList(
                 new Connect(view, manager),
                 new Exit(view, manager),
                 new Help(view),
@@ -23,8 +27,7 @@ public class Controller {
                 new Delete(view, manager),
                 new Update(view, manager),
                 new Clear(view, manager),
-                new Unsupported(view)
-        };
+                new Unsupported(view)));
     }
 
     public void run() {
@@ -34,7 +37,7 @@ public class Controller {
             executeCommand(inputCommand);
             inputCommand = view.read();
         }
-        commands[1].execute("exit");
+        commands.get(1).execute("exit");
     }
 
     private void executeCommand(String inputCommand) {
