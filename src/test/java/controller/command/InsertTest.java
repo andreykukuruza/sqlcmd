@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,8 +43,11 @@ class InsertTest {
 //        then
         verify(manager, times(1))
                 .insert("TableName",
-                        Arrays.asList("ColumnName1", "ColumnName2"),
-                        Arrays.asList("ColumnValue1", "ColumnValue2"));
+                        new LinkedHashMap<String, String>() {{
+                            put("ColumnName1", "ColumnValue1");
+                            put("ColumnName2", "ColumnValue2");
+                        }}
+                );
         verify(view, times(1)).write("Data was successful insert in the table.");
         verify(view, times(1)).write(CommandMessages.ENTER_NEXT_COMMAND);
     }
@@ -69,14 +73,18 @@ class InsertTest {
 //        given
         DatabaseManagerException e = new DatabaseManagerException("Any exception");
         doThrow(e).when(manager).insert("WrongTableName",
-                Arrays.asList("ColumnName1", "ColumnName2"),
-                Arrays.asList("ColumnValue1", "ColumnValue2"));
+                new LinkedHashMap<String, String>() {{
+                    put("ColumnName1", "ColumnValue1");
+                    put("ColumnName2", "ColumnValue2");
+                }});
 //        when
         insert.execute("insert|WrongTableName|ColumnName1|ColumnValue1|ColumnName2|ColumnValue2");
 //        then
         verify(manager, times(1)).insert("WrongTableName",
-                Arrays.asList("ColumnName1", "ColumnName2"),
-                Arrays.asList("ColumnValue1", "ColumnValue2"));
+                new LinkedHashMap<String, String>() {{
+                    put("ColumnName1", "ColumnValue1");
+                    put("ColumnName2", "ColumnValue2");
+                }});
         verify(view, times(1)).write(e.getMessage());
         verify(view, times(1)).write(CommandMessages.ENTER_NEXT_COMMAND);
     }

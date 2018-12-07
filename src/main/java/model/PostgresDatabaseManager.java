@@ -85,11 +85,11 @@ public class PostgresDatabaseManager implements DatabaseManager {
 
     @Override
     public void update(String tableName, String verifiableColumnName,
-                       String verifiableColumnValue, Map<String, String> namesToValuesOfUpdatableRow) {
+                       String verifiableColumnValue, Map<String, String> columnNameToColumnValueOfUpdatableRows) {
         throwExceptionIfNotConnected();
         try (Statement statement = connection.createStatement()) {
             String sql = getSQLForUpdatingData(tableName, verifiableColumnName,
-                    verifiableColumnValue, namesToValuesOfUpdatableRow);
+                    verifiableColumnValue, columnNameToColumnValueOfUpdatableRows);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
@@ -98,12 +98,10 @@ public class PostgresDatabaseManager implements DatabaseManager {
 
 
     @Override
-    public void insert(String tableName, List<String> columnsNames,
-                       List<String> columnsValues) {
-        throwExceptionIfSizesOfListsNotEqual(columnsNames, columnsValues);
+    public void insert(String tableName, Map<String, String> columnNameToColumnValue) {
         throwExceptionIfNotConnected();
         try (Statement statement = connection.createStatement()) {
-            String sql = getSQLForInsertDataInTable(tableName, columnsNames, columnsValues);
+            String sql = getSQLForInsertDataInTable(tableName, columnNameToColumnValue);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
@@ -184,17 +182,24 @@ public class PostgresDatabaseManager implements DatabaseManager {
         return sql.toString();
     }
 
-    private String getSQLForInsertDataInTable(String tableName, List<String> columnNames, List<String> columnValues) {
+    private String getSQLForInsertDataInTable(String tableName, Map<String, String> columnNameToColumnValue) {
         StringBuilder sql = new StringBuilder("INSERT INTO " + tableName + " (");
-        for (int i = 0; i < columnNames.size() - 1; i++) {
-            sql.append(columnNames.get(i)).append(", ");
+        Iterator<String> keyIterator = columnNameToColumnValue.keySet().iterator();
+        while (keyIterator.hasNext()) {
+            sql.append(keyIterator.next());
+            if (keyIterator.hasNext()) {
+                sql.append(", ");
+            }
         }
-        sql.append(columnNames.get(columnNames.size() - 1)).append(") VALUES (");
-        for (int i = 0; i < columnValues.size() - 1; i++) {
-            sql.append(columnValues.get(i)).append(", ");
+        sql.append(") VALUES (");
+        Iterator<String> valueIterator = columnNameToColumnValue.values().iterator();
+        while (valueIterator.hasNext()) {
+            sql.append(valueIterator.next());
+            if (valueIterator.hasNext()) {
+                sql.append(", ");
+            }
         }
-        sql.append(columnValues.get(columnValues.size() - 1)).append(");");
-        return sql.toString();
+        return sql.append(");").toString();
     }
 
     private String getSQLForUpdatingData(String tableName, String verifiableColumnName,

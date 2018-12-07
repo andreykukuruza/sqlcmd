@@ -5,8 +5,8 @@ import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Insert implements Command {
     private static final int MIN_NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
@@ -27,17 +27,16 @@ public class Insert implements Command {
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
         if (isCorrectNumberOfParameters(formatCommand)) {
-            List<String> columnNames = getColumnNames(formatCommand);
-            List<String> columnValues = getColumnValues(formatCommand);
-            executeInsert(formatCommand[1], columnNames, columnValues);
+            Map<String, String> columnNameToColumnValue = getColumnNameToColumnValue(formatCommand);
+            executeInsert(formatCommand[1], columnNameToColumnValue);
         } else {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
-    private void executeInsert(String tableName, List<String> columnNames, List<String> columnValues) {
+    private void executeInsert(String tableName, Map<String, String> columnNameToColumnValue) {
         try {
-            manager.insert(tableName, columnNames, columnValues);
+            manager.insert(tableName, columnNameToColumnValue);
             view.write("Data was successful insert in the table.");
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         } catch (DatabaseManagerException e) {
@@ -46,20 +45,12 @@ public class Insert implements Command {
         }
     }
 
-    private List<String> getColumnValues(String[] formatCommand) {
-        ArrayList<String> columnValues = new ArrayList<>();
-        for (int i = 3; i < formatCommand.length; i += 2) {
-            columnValues.add(formatCommand[i]);
-        }
-        return columnValues;
-    }
-
-    private List<String> getColumnNames(String[] formatCommand) {
-        ArrayList<String> columnNames = new ArrayList<>();
+    private Map<String, String> getColumnNameToColumnValue(String[] formatCommand) {
+        LinkedHashMap<String, String> columnNameToColumnValue = new LinkedHashMap<>();
         for (int i = 2; i < formatCommand.length; i += 2) {
-            columnNames.add(formatCommand[i]);
+            columnNameToColumnValue.put(formatCommand[i], formatCommand[i + 1]);
         }
-        return columnNames;
+        return columnNameToColumnValue;
     }
 
     private boolean isCorrectNumberOfParameters(String[] formatCommand) {

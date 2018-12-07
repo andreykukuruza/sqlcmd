@@ -18,9 +18,9 @@ public interface DatabaseManager {
     void delete(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn);
 
     void update(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn,
-                Map<String, String> namesToValuesOfUpdatableRow);
+                Map<String, String> columnNameToColumnValueOfUpdatableRows);
 
-    void insert(String tableName, List<String> columnNames, List<String> columnValues);
+    void insert(String tableName, Map<String, String> columnNameToColumnValue);
 
     List<String> getTableData(String tableName);
 
