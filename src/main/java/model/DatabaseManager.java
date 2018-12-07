@@ -1,6 +1,7 @@
 package model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface DatabaseManager {
@@ -17,7 +18,7 @@ public interface DatabaseManager {
     void delete(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn);
 
     void update(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn,
-                List<String> namesOfUpdatableColumns, List<String> valuesOfUpdatableColumns);
+                Map<String, String> namesToValuesOfUpdatableRow);
 
     void insert(String tableName, List<String> columnNames, List<String> columnValues);
 

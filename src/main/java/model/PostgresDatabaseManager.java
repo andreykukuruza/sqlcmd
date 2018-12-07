@@ -39,8 +39,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
                 "AND table_schema IN('public');";
         Set<String> tableNames = new HashSet<>();
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql))
-        {
+             ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 tableNames.add(resultSet.getString(1));
             }
@@ -86,13 +85,11 @@ public class PostgresDatabaseManager implements DatabaseManager {
 
     @Override
     public void update(String tableName, String verifiableColumnName,
-                       String verifiableColumnValue, List<String> updatableColumnsNames,
-                       List<String> updatableColumnsValues) {
-        throwExceptionIfSizesOfListsNotEqual(updatableColumnsNames, updatableColumnsValues);
+                       String verifiableColumnValue, Map<String, String> namesToValuesOfUpdatableRow) {
         throwExceptionIfNotConnected();
         try (Statement statement = connection.createStatement()) {
             String sql = getSQLForUpdatingData(tableName, verifiableColumnName,
-                    verifiableColumnValue, updatableColumnsNames, updatableColumnsValues);
+                    verifiableColumnValue, namesToValuesOfUpdatableRow);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
@@ -137,8 +134,7 @@ public class PostgresDatabaseManager implements DatabaseManager {
         throwExceptionIfNotConnected();
         String sql = "SELECT * FROM public." + tableName + ";";
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql))
-        {
+             ResultSet resultSet = statement.executeQuery(sql)) {
             Set<String> result = new LinkedHashSet<>();
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             for (int i = 0; i < resultSetMetaData.getColumnCount(); i++) {
@@ -202,14 +198,16 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     private String getSQLForUpdatingData(String tableName, String verifiableColumnName,
-                                         String verifiableColumnValue, List<String> updatableColumnsNames,
-                                         List<String> updatableColumnsValues) {
+                                         String verifiableColumnValue, Map<String, String> namesToValuesOfUpdatableRow) {
         StringBuilder sql = new StringBuilder("UPDATE " + tableName + " SET ");
-        for (int i = 0; i < updatableColumnsNames.size() - 1; i++) {
-            sql.append(updatableColumnsNames.get(i)).append(" = ").append(updatableColumnsValues.get(i)).append(", ");
+        Iterator<Map.Entry<String, String>> iterator = namesToValuesOfUpdatableRow.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> next = iterator.next();
+            sql.append(next.getKey()).append(" = ").append(next.getValue());
+            if (iterator.hasNext()) {
+                sql.append(", ");
+            }
         }
-        sql.append(updatableColumnsNames.get(updatableColumnsNames.size() - 1));
-        sql.append(" = ").append(updatableColumnsValues.get(updatableColumnsValues.size() - 1));
         sql.append(" WHERE ").append(verifiableColumnName).append(" = ").append(verifiableColumnValue).append(";");
         return sql.toString();
     }

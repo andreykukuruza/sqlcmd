@@ -138,8 +138,11 @@ class PostgresDatabaseManagerCommandsTest {
         manager.update(tableName,
                 "age",
                 "19",
-                Arrays.asList("name", "id", "age"),
-                Arrays.asList("'DELETED'", "-1", "-1"));
+                new LinkedHashMap<String, String>() {{
+                    put("name", "'DELETED'");
+                    put("id", "-1");
+                    put("age", "-1");
+                }});
 //        then
         List<String> actual = manager.getTableData(tableName);
         List<String> expected = Arrays.asList(
@@ -162,8 +165,11 @@ class PostgresDatabaseManagerCommandsTest {
                 "IncorrectTableName",
                 "age",
                 "19",
-                Arrays.asList("name", "id", "age"),
-                Arrays.asList("'DELETED'", "-1", "-1")));
+                new LinkedHashMap<String, String>() {{
+                    put("name", "'DELETED'");
+                    put("id", "-1");
+                    put("age", "-1");
+                }}));
 //        then
         assertEquals(errorMessage, e.getMessage());
 //        after
@@ -180,8 +186,11 @@ class PostgresDatabaseManagerCommandsTest {
                 tableName,
                 "IncorrectVerifiableColumnName",
                 "19",
-                Arrays.asList("name", "id", "age"),
-                Arrays.asList("'DELETED'", "-1", "-1")));
+                new LinkedHashMap<String, String>() {{
+                    put("name", "'DELETED'");
+                    put("id", "-1");
+                    put("age", "-1");
+                }}));
 //        then
         assertEquals(errorMessage, e.getMessage());
 //        after
@@ -198,8 +207,11 @@ class PostgresDatabaseManagerCommandsTest {
                 tableName,
                 "age",
                 "-5",
-                Arrays.asList("name", "id", "age"),
-                Arrays.asList("'DELETED'", "-1", "-1"));
+                new LinkedHashMap<String, String>() {{
+                    put("name", "'DELETED'");
+                    put("id", "-1");
+                    put("age", "-1");
+                }});
 //        then
         List<String> actual = manager.getTableData(tableName);
         List<String> expected = Arrays.asList(
@@ -222,8 +234,11 @@ class PostgresDatabaseManagerCommandsTest {
                 tableName,
                 "age",
                 "19",
-                Arrays.asList("IncorrectUpdatableColumnName", "id", "age"),
-                Arrays.asList("'DELETED'", "-1", "-1")));
+                new LinkedHashMap<String, String>() {{
+                    put("IncorrectUpdatableColumnsName", "'DELETED'");
+                    put("id", "-1");
+                    put("age", "-1");
+                }}));
 //        then
         assertEquals(errorMessage, e.getMessage());
 //        after
@@ -240,8 +255,11 @@ class PostgresDatabaseManagerCommandsTest {
                 tableName,
                 "age",
                 "19",
-                Arrays.asList("IncorrectUpdatableColumnName", "id", "age"),
-                Arrays.asList("'DELETED'", "'IncorrectColumnType'", "-1")));
+                new LinkedHashMap<String, String>() {{
+                    put("name", "'DELETED'");
+                    put("id", "'IncorrectType'");
+                    put("age", "-1");
+                }}));
 //        then
         assertEquals(errorMessage, e.getMessage());
 //        after

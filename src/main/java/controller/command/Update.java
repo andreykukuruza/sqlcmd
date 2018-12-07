@@ -5,8 +5,7 @@ import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Update implements Command {
     private static final int MIN_NUMBER_OF_PARAMETERS_IN_COMMAND = 6;
@@ -27,41 +26,31 @@ public class Update implements Command {
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
         if (isCorrectNumberOfParameters(formatCommand)) {
-            List<String> namesOfUpdatableColumns = getNamesOfUpdatableColumns(formatCommand);
-            List<String> valuesOfUpdatableColumns = getValuesOfUpdatableColumns(formatCommand);
+            Map<String, String> namesToValuesOfUpdatableRow = getNamesToValuesOfUpdatableRow(formatCommand);
             executeUpdate(formatCommand[1], formatCommand[2], formatCommand[3],
-                    namesOfUpdatableColumns, valuesOfUpdatableColumns);
+                    namesToValuesOfUpdatableRow);
         } else {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
+    private Map<String, String> getNamesToValuesOfUpdatableRow(String[] formatCommand) {
+        Map<String, String> namesToValuesOfUpdatableRow = new LinkedHashMap<>();
+        for (int i = 4; i < formatCommand.length; i += 2) {
+            namesToValuesOfUpdatableRow.put(formatCommand[i], formatCommand[i + 1]);
+        }
+        return namesToValuesOfUpdatableRow;
+    }
+
     private void executeUpdate(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn,
-                               List<String> namesOfUpdatableColumns, List<String> valuesOfUpdatableColumns) {
+                               Map<String, String> namesToValuesOfUpdatableRow) {
         try {
-            manager.update(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn,
-                    namesOfUpdatableColumns, valuesOfUpdatableColumns);
+            manager.update(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn, namesToValuesOfUpdatableRow);
             new Find(this.view, this.manager).execute("find|" + tableName);
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         }
-    }
-
-    private List<String> getNamesOfUpdatableColumns(String[] formatCommand) {
-        ArrayList<String> namesOfUpdatableColumns = new ArrayList<>();
-        for (int i = 4; i < formatCommand.length; i += 2) {
-            namesOfUpdatableColumns.add(formatCommand[i]);
-        }
-        return namesOfUpdatableColumns;
-    }
-
-    private List<String> getValuesOfUpdatableColumns(String[] formatCommand) {
-        ArrayList<String> valuesOfUpdatableColumns = new ArrayList<>();
-        for (int i = 5; i < formatCommand.length; i += 2) {
-            valuesOfUpdatableColumns.add(formatCommand[i]);
-        }
-        return valuesOfUpdatableColumns;
     }
 
     private boolean isCorrectNumberOfParameters(String[] formatCommand) {

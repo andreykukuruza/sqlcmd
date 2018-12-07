@@ -50,8 +50,7 @@ class UpdateTest {
 //        then
         verify(manager, times(1)).update(
                 tableName, "ColumnName1", "Value",
-                Collections.singletonList("ColumnName2"),
-                Collections.singletonList("Value"));
+                Collections.singletonMap("ColumnName2", "Value"));
         verify(manager, times(1)).getColumnsNamesInTable(tableName);
         verify(manager, times(1)).getTableData(tableName);
         verify(view, times(1)).write("+-----------+-----------+\n" +
@@ -75,7 +74,7 @@ class UpdateTest {
     void executeTest_WithAnyException() {
 //        given
         DatabaseManagerException e = new DatabaseManagerException("Any Exception");
-        doThrow(e).when(manager).update(anyString(), anyString(),anyString(), anyList(), anyList());
+        doThrow(e).when(manager).update(anyString(), anyString(),anyString(), anyMap());
 //        when
         update.execute("update|TableName|VerifiableColumnName|VerifiableValue|ColumnName1|Value1");
 //        then
