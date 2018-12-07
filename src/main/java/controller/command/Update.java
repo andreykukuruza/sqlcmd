@@ -48,7 +48,7 @@ public class Update implements Command {
         }
     }
 
-    private ArrayList<String> getNamesOfUpdatableColumns(String[] formatCommand) {
+    private List<String> getNamesOfUpdatableColumns(String[] formatCommand) {
         ArrayList<String> namesOfUpdatableColumns = new ArrayList<>();
         for (int i = 4; i < formatCommand.length; i += 2) {
             namesOfUpdatableColumns.add(formatCommand[i]);
@@ -56,7 +56,7 @@ public class Update implements Command {
         return namesOfUpdatableColumns;
     }
 
-    private ArrayList<String> getValuesOfUpdatableColumns(String[] formatCommand) {
+    private List<String> getValuesOfUpdatableColumns(String[] formatCommand) {
         ArrayList<String> valuesOfUpdatableColumns = new ArrayList<>();
         for (int i = 5; i < formatCommand.length; i += 2) {
             valuesOfUpdatableColumns.add(formatCommand[i]);

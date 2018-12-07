@@ -46,7 +46,7 @@ public class Insert implements Command {
         }
     }
 
-    private ArrayList<String> getColumnValues(String[] formatCommand) {
+    private List<String> getColumnValues(String[] formatCommand) {
         ArrayList<String> columnValues = new ArrayList<>();
         for (int i = 3; i < formatCommand.length; i += 2) {
             columnValues.add(formatCommand[i]);
@@ -54,7 +54,7 @@ public class Insert implements Command {
         return columnValues;
     }
 
-    private ArrayList<String> getColumnNames(String[] formatCommand) {
+    private List<String> getColumnNames(String[] formatCommand) {
         ArrayList<String> columnNames = new ArrayList<>();
         for (int i = 2; i < formatCommand.length; i += 2) {
             columnNames.add(formatCommand[i]);

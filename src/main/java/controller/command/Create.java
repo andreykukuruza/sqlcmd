@@ -43,7 +43,7 @@ public class Create implements Command {
         }
     }
 
-    private ArrayList<String> getTypesOfColumns(String[] formatCommand) {
+    private List<String> getTypesOfColumns(String[] formatCommand) {
         ArrayList<String> typesOfColumns = new ArrayList<>();
         for (int i = 3; i < formatCommand.length; i += 2) {
             typesOfColumns.add(formatCommand[i]);
@@ -51,7 +51,7 @@ public class Create implements Command {
         return typesOfColumns;
     }
 
-    private ArrayList<String> getNamesOfColumns(String[] formatCommand) {
+    private List<String> getNamesOfColumns(String[] formatCommand) {
         ArrayList<String> namesOfColumns = new ArrayList<>();
         for (int i = 2; i < formatCommand.length; i += 2) {
             namesOfColumns.add(formatCommand[i]);
