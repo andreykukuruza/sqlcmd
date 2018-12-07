@@ -26,7 +26,7 @@ public interface DatabaseManager {
 
     Set<String> getColumnsNamesInTable(String tableName);
 
-    void create(String tableName, List<String> namesOfColumns, List<String> typesOfColumns);
+    void create(String tableName, Map<String, String> columnNameToColumnType);
 
     void drop(String tableName);
 }

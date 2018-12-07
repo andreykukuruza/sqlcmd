@@ -10,8 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
 
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,8 +43,10 @@ class CreateTest {
 //        then
         verify(manager, times(1))
                 .create("TableName",
-                        Arrays.asList("ColumnName1", "ColumnName2"),
-                        Arrays.asList("ColumnValue1", "ColumnValue2"));
+                        new LinkedHashMap<String, String>() {{
+                            put("ColumnName1", "ColumnValue1");
+                            put("ColumnName2", "ColumnValue2");
+                        }});
         verify(view, times(1)).write("Table TableName was created. Enter next command or help:");
     }
 
@@ -62,7 +64,7 @@ class CreateTest {
         create.execute("create|TableName");
 //        then
         verify(manager, times(1))
-                .create("TableName", Collections.emptyList(), Collections.emptyList());
+                .create("TableName", Collections.emptyMap());
         verify(view, times(1)).write("Table TableName was created. Enter next command or help:");
     }
 
@@ -78,15 +80,15 @@ class CreateTest {
     void executeTest_WithIncorrectTableName() {
 //        given
         DatabaseManagerException e = new DatabaseManagerException("Input data does not correct.");
-        doThrow(e).when(manager).create("WrongTableName",
-                Arrays.asList("ColumnName1", "ColumnName2"),
-                Arrays.asList("ColumnValue1", "ColumnValue2"));
+        LinkedHashMap<String, String> columnNameToColumnType = new LinkedHashMap<String, String>() {{
+            put("ColumnName1", "ColumnValue1");
+            put("ColumnName2", "ColumnValue2");
+        }};
+        doThrow(e).when(manager).create("WrongTableName", columnNameToColumnType);
 //        when
         create.execute("create|WrongTableName|ColumnName1|ColumnValue1|ColumnName2|ColumnValue2");
 //        then
-        verify(manager, times(1)).create("WrongTableName",
-                Arrays.asList("ColumnName1", "ColumnName2"),
-                Arrays.asList("ColumnValue1", "ColumnValue2"));
+        verify(manager, times(1)).create("WrongTableName", columnNameToColumnType);
         verify(view, times(1)).write(e.getMessage());
         verify(view, times(1)).write(CommandMessages.ENTER_NEXT_COMMAND);
     }

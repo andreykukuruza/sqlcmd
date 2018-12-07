@@ -145,12 +145,10 @@ public class PostgresDatabaseManager implements DatabaseManager {
     }
 
     @Override
-    public void create(String tableName, List<String> columnsNames,
-                       List<String> columnsTypes) {
-        throwExceptionIfSizesOfListsNotEqual(columnsNames, columnsTypes);
+    public void create(String tableName, Map<String, String> columnNameToColumnType) {
         throwExceptionIfNotConnected();
         try (Statement statement = connection.createStatement()) {
-            String sql = getSQLForCreatingNewTable(tableName, columnsNames, columnsTypes);
+            String sql = getSQLForCreatingNewTable(tableName, columnNameToColumnType);
             statement.executeUpdate(sql);
         } catch (SQLException e) {
             throw new DatabaseManagerException(incorrectInputDataErrorMessage, e);
@@ -168,18 +166,19 @@ public class PostgresDatabaseManager implements DatabaseManager {
         }
     }
 
-    private String getSQLForCreatingNewTable(String tableName, List<String> columnsNames,
-                                             List<String> columnsTypes) {
+    private String getSQLForCreatingNewTable(String tableName, Map<String, String> columnNameToColumnType) {
         StringBuilder sql = new StringBuilder("CREATE TABLE public." + tableName + " (");
-        if (columnsNames.size() != 0) {
-            for (int i = 0; i < columnsNames.size() - 1; i++) {
-                sql.append(columnsNames.get(i)).append(" ").append(columnsTypes.get(i)).append(", ");
+        if (columnNameToColumnType.size() != 0) {
+            Iterator<Map.Entry<String, String>> iterator = columnNameToColumnType.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, String> next = iterator.next();
+                sql.append(next.getKey()).append(" ").append(next.getValue());
+                if (iterator.hasNext()) {
+                    sql.append(", ");
+                }
             }
-            sql.append(columnsNames.get(columnsNames.size() - 1)).append(" ");
-            sql.append(columnsTypes.get(columnsTypes.size() - 1));
         }
-        sql.append(");");
-        return sql.toString();
+        return sql.append(");").toString();
     }
 
     private String getSQLForInsertDataInTable(String tableName, Map<String, String> columnNameToColumnValue) {
@@ -215,12 +214,6 @@ public class PostgresDatabaseManager implements DatabaseManager {
         }
         sql.append(" WHERE ").append(verifiableColumnName).append(" = ").append(verifiableColumnValue).append(";");
         return sql.toString();
-    }
-
-    private void throwExceptionIfSizesOfListsNotEqual(List<String> list1, List<String> list2) {
-        if (list1.size() != list2.size()) {
-            throw new IllegalArgumentException("You gave wrong arguments.");
-        }
     }
 
     private void throwExceptionIfNotConnected() {

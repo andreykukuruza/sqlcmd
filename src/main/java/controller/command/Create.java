@@ -5,8 +5,8 @@ import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Create implements Command {
     private static final int MIN_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
@@ -27,15 +27,15 @@ public class Create implements Command {
     public void execute(String command) {
         String[] formatCommand = command.split("\\|");
         if (isCorrectNumberOfParameters(formatCommand)) {
-            executeCreate(formatCommand[1], getNamesOfColumns(formatCommand), getTypesOfColumns(formatCommand));
+            executeCreate(formatCommand[1], getColumnNameToColumnType(formatCommand));
         } else {
             view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
-    private void executeCreate(String tableName, List<String> namesOfColumns, List<String> typesOfColumns) {
+    private void executeCreate(String tableName, Map<String, String> columnNameToColumnType) {
         try {
-            manager.create(tableName, namesOfColumns, typesOfColumns);
+            manager.create(tableName, columnNameToColumnType);
             view.write("Table " + tableName + " was created. Enter next command or help:");
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
@@ -43,20 +43,12 @@ public class Create implements Command {
         }
     }
 
-    private List<String> getTypesOfColumns(String[] formatCommand) {
-        ArrayList<String> typesOfColumns = new ArrayList<>();
-        for (int i = 3; i < formatCommand.length; i += 2) {
-            typesOfColumns.add(formatCommand[i]);
-        }
-        return typesOfColumns;
-    }
-
-    private List<String> getNamesOfColumns(String[] formatCommand) {
-        ArrayList<String> namesOfColumns = new ArrayList<>();
+    private Map<String, String> getColumnNameToColumnType(String[] formatCommand) {
+        Map<String, String> columnNameToColumnType = new LinkedHashMap<>();
         for (int i = 2; i < formatCommand.length; i += 2) {
-            namesOfColumns.add(formatCommand[i]);
+            columnNameToColumnType.put(formatCommand[i], formatCommand[i + 1]);
         }
-        return namesOfColumns;
+        return columnNameToColumnType;
     }
 
     private boolean isCorrectNumberOfParameters(String[] formatCommand) {

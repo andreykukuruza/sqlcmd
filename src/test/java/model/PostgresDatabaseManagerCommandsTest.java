@@ -28,8 +28,8 @@ class PostgresDatabaseManagerCommandsTest {
     @Test
     void tablesTest_WithTablesInDatabase() {
 //        given
-        manager.create("table1", new ArrayList<>(), new ArrayList<>());
-        manager.create("table2", new ArrayList<>(), new ArrayList<>());
+        manager.create("table1", new LinkedHashMap<>());
+        manager.create("table2", new LinkedHashMap<>());
 //        when
         Set<String> actual = manager.tables();
 //        then
@@ -270,7 +270,11 @@ class PostgresDatabaseManagerCommandsTest {
     void insertTest_WithCorrectParameters() {
 //        given
         String tableName = "test";
-        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+        manager.create(tableName, new LinkedHashMap<String, String>() {{
+            put("name", "text");
+            put("age", "int");
+            put("id", "int");
+        }});
 //        when
         manager.insert(tableName, new HashMap<String, String>() {{
             put("name", "'Liza'");
@@ -289,7 +293,11 @@ class PostgresDatabaseManagerCommandsTest {
     void insertTest_WithIncorrectTableName() {
 //        given
         String tableName = "test";
-        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+        manager.create(tableName, new LinkedHashMap<String, String>() {{
+            put("name", "text");
+            put("age", "int");
+            put("id", "int");
+        }});
 //        when
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.insert(
                 "IncorrectTableName",
@@ -308,7 +316,11 @@ class PostgresDatabaseManagerCommandsTest {
     void insertTest_WithIncorrectColumnName() {
 //        given
         String tableName = "test";
-        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+        manager.create(tableName, new LinkedHashMap<String, String>() {{
+            put("name", "text");
+            put("age", "int");
+            put("id", "int");
+        }});
 //        when
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.insert(
                 tableName,
@@ -327,7 +339,11 @@ class PostgresDatabaseManagerCommandsTest {
     void insertTest_WithIncorrectColumnType() {
 //        given
         String tableName = "test";
-        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+        manager.create(tableName, new LinkedHashMap<String, String>() {{
+            put("name", "text");
+            put("age", "int");
+            put("id", "int");
+        }});
 //        when
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.insert(
                 tableName,
@@ -346,7 +362,11 @@ class PostgresDatabaseManagerCommandsTest {
     void getTableDataTest_WithEmptyTable() {
 //        given
         String tableName = "test";
-        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+        manager.create(tableName, new LinkedHashMap<String, String>() {{
+            put("name", "text");
+            put("age", "int");
+            put("id", "int");
+        }});
 //        when
         List<String> actual = manager.getTableData(tableName);
 //        then
@@ -378,7 +398,11 @@ class PostgresDatabaseManagerCommandsTest {
     void getTableDataTest_WithIncorrectTableName() {
 //        given
         String tableName = "test";
-        manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
+        manager.create(tableName, new LinkedHashMap<String, String>() {{
+            put("name", "text");
+            put("age", "int");
+            put("id", "int");
+        }});
 //        when
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class,
                 () -> manager.getTableData("IncorrectTableName"));
@@ -392,7 +416,7 @@ class PostgresDatabaseManagerCommandsTest {
     void getColumnsNamesInTableTest_WithoutColumns() {
 //        given
         String tableName = "test";
-        manager.create(tableName, new ArrayList<>(), new ArrayList<>());
+        manager.create(tableName, new LinkedHashMap<>());
 //        when
         Set<String> actual = manager.getColumnsNamesInTable(tableName);
 //        then
@@ -437,7 +461,10 @@ class PostgresDatabaseManagerCommandsTest {
     void createTest_WithCorrectParameters() {
 //        when
         String tableName = "test";
-        manager.create(tableName, Arrays.asList("name", "age"), Arrays.asList("text", "int"));
+        manager.create(tableName, new LinkedHashMap<String, String>() {{
+            put("name", "text");
+            put("age", "int");
+        }});
 //        then
         Set<String> actual = manager.tables();
         Set<String> expected = new HashSet<String>() {{
@@ -449,19 +476,13 @@ class PostgresDatabaseManagerCommandsTest {
     }
 
     @Test
-    void createTest_WithDifferentSizeColumnsAndTypes() {
-//        when
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
-                () -> manager.create("test", Arrays.asList("name", "age", "id"), Arrays.asList("text", "int")));
-//        then
-        assertEquals("You gave wrong arguments.", e.getMessage());
-    }
-
-    @Test
     void createTest_WithIncorrectType() {
 //        when
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class,
-                () -> manager.create("test", Arrays.asList("name", "age"), Arrays.asList("WrongType", "int")));
+                () -> manager.create("test", new LinkedHashMap<String, String>() {{
+                    put("name", "text");
+                    put("age", "WrongType");
+                }}));
 //        then
         assertEquals(errorMessage, e.getMessage());
     }
@@ -485,9 +506,11 @@ class PostgresDatabaseManagerCommandsTest {
     }
 
     private void createTableWithData(String tableName) {
-        ArrayList<String> columnsNames = new ArrayList<>(Arrays.asList("name", "age", "id"));
-        ArrayList<String> columnsTypes = new ArrayList<>(Arrays.asList("text", "int", "int"));
-        manager.create(tableName, columnsNames, columnsTypes);
+        manager.create(tableName, new LinkedHashMap<String, String>() {{
+            put("name", "text");
+            put("age", "int");
+            put("id", "int");
+        }});
         manager.insert(tableName, new HashMap<String, String>() {{
             put("name", "'Monica'");
             put("age", "13");
