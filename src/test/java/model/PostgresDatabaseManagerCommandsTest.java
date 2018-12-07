@@ -138,7 +138,7 @@ class PostgresDatabaseManagerCommandsTest {
         manager.update(tableName,
                 "age",
                 "19",
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("name", "'DELETED'");
                     put("id", "-1");
                     put("age", "-1");
@@ -165,7 +165,7 @@ class PostgresDatabaseManagerCommandsTest {
                 "IncorrectTableName",
                 "age",
                 "19",
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("name", "'DELETED'");
                     put("id", "-1");
                     put("age", "-1");
@@ -186,7 +186,7 @@ class PostgresDatabaseManagerCommandsTest {
                 tableName,
                 "IncorrectVerifiableColumnName",
                 "19",
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("name", "'DELETED'");
                     put("id", "-1");
                     put("age", "-1");
@@ -207,7 +207,7 @@ class PostgresDatabaseManagerCommandsTest {
                 tableName,
                 "age",
                 "-5",
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("name", "'DELETED'");
                     put("id", "-1");
                     put("age", "-1");
@@ -234,7 +234,7 @@ class PostgresDatabaseManagerCommandsTest {
                 tableName,
                 "age",
                 "19",
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("IncorrectUpdatableColumnsName", "'DELETED'");
                     put("id", "-1");
                     put("age", "-1");
@@ -255,7 +255,7 @@ class PostgresDatabaseManagerCommandsTest {
                 tableName,
                 "age",
                 "19",
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("name", "'DELETED'");
                     put("id", "'IncorrectType'");
                     put("age", "-1");
@@ -272,7 +272,7 @@ class PostgresDatabaseManagerCommandsTest {
         String tableName = "test";
         manager.create(tableName, Arrays.asList("name", "age", "id"), Arrays.asList("text", "int", "int"));
 //        when
-        manager.insert(tableName, new LinkedHashMap<String, String>() {{
+        manager.insert(tableName, new HashMap<String, String>() {{
             put("name", "'Liza'");
             put("age", "22");
             put("id", "42");
@@ -293,7 +293,7 @@ class PostgresDatabaseManagerCommandsTest {
 //        when
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.insert(
                 "IncorrectTableName",
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("name", "'Liza'");
                     put("age", "22");
                     put("id", "42");
@@ -312,7 +312,7 @@ class PostgresDatabaseManagerCommandsTest {
 //        when
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.insert(
                 tableName,
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("IncorrectColumnName", "'Liza'");
                     put("age", "22");
                     put("id", "42");
@@ -331,7 +331,7 @@ class PostgresDatabaseManagerCommandsTest {
 //        when
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.insert(
                 tableName,
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("name", "'Liza'");
                     put("age", "'IncorrectColumnType'");
                     put("id", "42");
@@ -488,22 +488,22 @@ class PostgresDatabaseManagerCommandsTest {
         ArrayList<String> columnsNames = new ArrayList<>(Arrays.asList("name", "age", "id"));
         ArrayList<String> columnsTypes = new ArrayList<>(Arrays.asList("text", "int", "int"));
         manager.create(tableName, columnsNames, columnsTypes);
-        manager.insert(tableName, new LinkedHashMap<String, String>() {{
+        manager.insert(tableName, new HashMap<String, String>() {{
             put("name", "'Monica'");
             put("age", "13");
             put("id", "1");
         }});
-        manager.insert(tableName, new LinkedHashMap<String, String>() {{
+        manager.insert(tableName, new HashMap<String, String>() {{
             put("name", "'Alex'");
             put("age", "19");
             put("id", "2");
         }});
-        manager.insert(tableName, new LinkedHashMap<String, String>() {{
+        manager.insert(tableName, new HashMap<String, String>() {{
             put("name", "'Alisa'");
             put("age", "19");
             put("id", "3");
         }});
-        manager.insert(tableName, new LinkedHashMap<String, String>() {{
+        manager.insert(tableName, new HashMap<String, String>() {{
             put("name", "'Alisa'");
             put("age", "21");
             put("id", "4");

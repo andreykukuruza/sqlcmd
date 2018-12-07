@@ -10,8 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,7 +42,7 @@ class InsertTest {
 //        then
         verify(manager, times(1))
                 .insert("TableName",
-                        new LinkedHashMap<String, String>() {{
+                        new HashMap<String, String>() {{
                             put("ColumnName1", "ColumnValue1");
                             put("ColumnName2", "ColumnValue2");
                         }}
@@ -73,7 +72,7 @@ class InsertTest {
 //        given
         DatabaseManagerException e = new DatabaseManagerException("Any exception");
         doThrow(e).when(manager).insert("WrongTableName",
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("ColumnName1", "ColumnValue1");
                     put("ColumnName2", "ColumnValue2");
                 }});
@@ -81,7 +80,7 @@ class InsertTest {
         insert.execute("insert|WrongTableName|ColumnName1|ColumnValue1|ColumnName2|ColumnValue2");
 //        then
         verify(manager, times(1)).insert("WrongTableName",
-                new LinkedHashMap<String, String>() {{
+                new HashMap<String, String>() {{
                     put("ColumnName1", "ColumnValue1");
                     put("ColumnName2", "ColumnValue2");
                 }});

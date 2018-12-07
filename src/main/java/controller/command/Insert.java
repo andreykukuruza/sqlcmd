@@ -5,7 +5,7 @@ import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Insert implements Command {
@@ -46,7 +46,7 @@ public class Insert implements Command {
     }
 
     private Map<String, String> getColumnNameToColumnValue(String[] formatCommand) {
-        LinkedHashMap<String, String> columnNameToColumnValue = new LinkedHashMap<>();
+        Map<String, String> columnNameToColumnValue = new HashMap<>();
         for (int i = 2; i < formatCommand.length; i += 2) {
             columnNameToColumnValue.put(formatCommand[i], formatCommand[i + 1]);
         }

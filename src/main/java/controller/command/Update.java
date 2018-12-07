@@ -35,7 +35,7 @@ public class Update implements Command {
     }
 
     private Map<String, String> getNamesToValuesOfUpdatableRow(String[] formatCommand) {
-        Map<String, String> namesToValuesOfUpdatableRow = new LinkedHashMap<>();
+        Map<String, String> namesToValuesOfUpdatableRow = new HashMap<>();
         for (int i = 4; i < formatCommand.length; i += 2) {
             namesToValuesOfUpdatableRow.put(formatCommand[i], formatCommand[i + 1]);
         }
