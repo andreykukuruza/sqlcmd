@@ -1,6 +1,6 @@
 package controller.command;
 
-import controller.command.exception.DatabaseManagerException;
+import model.exception.DatabaseManagerException;
 import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package model;
 
-import controller.command.exception.DatabaseManagerException;
+import model.exception.DatabaseManagerException;
 
 import java.sql.*;
 import java.util.*;

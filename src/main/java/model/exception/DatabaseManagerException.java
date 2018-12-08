@@ -1,4 +1,4 @@
-package controller.command.exception;
+package model.exception;
 
 public class DatabaseManagerException extends RuntimeException {
     public DatabaseManagerException(String message, Exception cause) {

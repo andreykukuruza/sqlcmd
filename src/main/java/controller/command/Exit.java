@@ -1,6 +1,6 @@
 package controller.command;
 
-import controller.command.exception.DatabaseManagerException;
+import model.exception.DatabaseManagerException;
 import model.DatabaseManager;
 import view.View;
 
