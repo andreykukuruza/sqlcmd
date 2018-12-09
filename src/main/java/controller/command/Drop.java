@@ -33,7 +33,7 @@ public class Drop implements Command {
     private void executeDrop(String tableName) {
         try {
             manager.drop(tableName);
-            view.write("Table " + tableName + " was dropped. Enter next command or help:");
+            view.write(String.format("Table %s was dropped. Enter next command or help:", tableName));
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);

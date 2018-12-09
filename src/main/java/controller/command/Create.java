@@ -36,7 +36,7 @@ public class Create implements Command {
     private void executeCreate(String tableName, Map<String, String> columnNameToColumnType) {
         try {
             manager.create(tableName, columnNameToColumnType);
-            view.write("Table " + tableName + " was created. Enter next command or help:");
+            view.write(String.format("Table %s was created. Enter next command or help:", tableName));
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);

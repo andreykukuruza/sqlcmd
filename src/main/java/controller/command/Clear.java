@@ -33,7 +33,7 @@ public class Clear implements Command {
     private void executeClear(String tableName) {
         try {
             manager.clear(tableName);
-            view.write("Table " + tableName + " was cleared. Enter next command or help:");
+            view.write(String.format("Table %s was cleared. Enter next command or help:", tableName));
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
