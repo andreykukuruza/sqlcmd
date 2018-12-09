@@ -23,9 +23,9 @@ public class Help implements Command {
 
     @Override
     public void execute(String command) {
-        Path path = Paths.get("src/main/resources/help.txt");
         try {
-            view.write(new String(Files.readAllBytes(path), StandardCharsets.UTF_8));
+            view.write(new String(Files.readAllBytes(Paths.get("src/main/resources/help.txt")),
+                    StandardCharsets.UTF_8));
             view.write(CommandMessages.ENTER_NEXT_COMMAND);
         } catch (IOException e) {
             view.write(e.getMessage());
