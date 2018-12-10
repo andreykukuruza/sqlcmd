@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static controller.command.util.CommandMessages.*;
+
 public class Controller {
     private View view;
     private List<Command> commands;
@@ -33,11 +35,11 @@ public class Controller {
     public void run() {
         view.write("Hello! It is SQLCmd! Enter command or help:");
         String inputCommand = view.read();
-        while (!inputCommand.equals("exit")) {
+        while (!inputCommand.equals(EXIT)) {
             executeCommand(inputCommand);
             inputCommand = view.read();
         }
-        commands.get(1).execute("exit");
+        commands.get(1).execute(EXIT);
     }
 
     private void executeCommand(String inputCommand) {
