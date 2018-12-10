@@ -1,9 +1,9 @@
-package model.sqlQueries;
+package model.sql;
 
 import java.util.Iterator;
 import java.util.Map;
 
-public class PostgresSqlQueries {
+public class PostgresSql {
     public static final String URL = "jdbc:postgresql://localhost:5432/%s";
 
     public static final String GET_ALL_TABLES_NAMES = "SELECT table_name FROM information_schema.tables\n" +

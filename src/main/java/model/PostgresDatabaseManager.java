@@ -5,7 +5,7 @@ import model.exception.DatabaseManagerException;
 import java.sql.*;
 import java.util.*;
 
-import static model.sqlQueries.PostgresSqlQueries.*;
+import static model.sql.PostgresSql.*;
 
 public class PostgresDatabaseManager implements DatabaseManager {
     private Connection connection;
