@@ -1,9 +1,10 @@
 package controller.command;
 
 import model.exception.DatabaseManagerException;
-import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
+
+import static controller.command.util.CommandMessages.*;
 
 public class Clear implements Command {
     private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
@@ -17,7 +18,7 @@ public class Clear implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.startsWith("clear");
+        return command.startsWith(CLEAR);
     }
 
     @Override
@@ -26,17 +27,17 @@ public class Clear implements Command {
         if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
             executeClear(formatCommand[1]);
         } else {
-            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+            view.write(INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
     private void executeClear(String tableName) {
         try {
             manager.clear(tableName);
-            view.write(String.format("Table %s was cleared. Enter next command or help:", tableName));
+            view.write(String.format(CLEAR_SUCCESSFUL, tableName));
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 }

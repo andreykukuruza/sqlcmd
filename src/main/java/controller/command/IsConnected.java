@@ -3,6 +3,8 @@ package controller.command;
 import model.DatabaseManager;
 import view.View;
 
+import static controller.command.util.CommandMessages.*;
+
 public class IsConnected implements Command {
     private View view;
     private DatabaseManager manager;
@@ -19,6 +21,6 @@ public class IsConnected implements Command {
 
     @Override
     public void execute(String command) {
-        view.write("You can not use this command before connect to database. Enter next command or help:");
+        view.write(NEED_CONNECT);
     }
 }

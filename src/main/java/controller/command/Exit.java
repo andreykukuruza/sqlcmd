@@ -4,6 +4,8 @@ import model.exception.DatabaseManagerException;
 import model.DatabaseManager;
 import view.View;
 
+import static controller.command.util.CommandMessages.*;
+
 public class Exit implements Command {
     private View view;
     private DatabaseManager manager;
@@ -15,16 +17,16 @@ public class Exit implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.equals("exit");
+        return command.equals(EXIT);
     }
 
     @Override
     public void execute(String command) {
         try {
             manager.exit();
-            view.write("Goodbye!");
+            view.write(GOODBYE);
         } catch (DatabaseManagerException e) {
-            view.write(e.getMessage() + " Goodbye!");
+            view.write(String.format("%s %s", e.getMessage(), GOODBYE));
         }
     }
 }

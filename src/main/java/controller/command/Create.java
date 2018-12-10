@@ -1,12 +1,13 @@
 package controller.command;
 
 import model.exception.DatabaseManagerException;
-import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static controller.command.util.CommandMessages.*;
 
 public class Create implements Command {
     private static final int MIN_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
@@ -20,7 +21,7 @@ public class Create implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.startsWith("create");
+        return command.startsWith(CREATE);
     }
 
     @Override
@@ -29,17 +30,17 @@ public class Create implements Command {
         if (isCorrectNumberOfParameters(formatCommand)) {
             executeCreate(formatCommand[1], getColumnNameToColumnType(formatCommand));
         } else {
-            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+            view.write(INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
     private void executeCreate(String tableName, Map<String, String> columnNameToColumnType) {
         try {
             manager.create(tableName, columnNameToColumnType);
-            view.write(String.format("Table %s was created. Enter next command or help:", tableName));
+            view.write(String.format(CREATE_SUCCESSFUL, tableName));
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 

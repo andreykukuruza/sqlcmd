@@ -44,6 +44,6 @@ class IsConnectedTest {
         isConnected.execute("isConnected");
 //        then
         verify(view)
-                .write("You can not use this command before connect to database. Enter next command or help:");
+                .write("You can't use this command before connect to database. Enter next command or help:");
     }
 }

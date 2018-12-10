@@ -1,9 +1,10 @@
 package controller.command;
 
 import model.exception.DatabaseManagerException;
-import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
+
+import static controller.command.util.CommandMessages.*;
 
 public class Delete implements Command {
     private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
@@ -17,7 +18,7 @@ public class Delete implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.startsWith("delete");
+        return command.startsWith(DELETE);
     }
 
     @Override
@@ -26,17 +27,17 @@ public class Delete implements Command {
         if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
             executeDelete(formatCommand[1], formatCommand[2], formatCommand[3]);
         } else {
-            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+            view.write(INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
     private void executeDelete(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn) {
         try {
             manager.delete(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn);
-            new Find(this.view, this.manager).execute("find|" + tableName);
+            new Find(this.view, this.manager).execute(String.format("%s|%s", FIND, tableName));
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 }

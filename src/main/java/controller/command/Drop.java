@@ -1,9 +1,10 @@
 package controller.command;
 
 import model.exception.DatabaseManagerException;
-import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
+
+import static controller.command.util.CommandMessages.*;
 
 public class Drop implements Command {
     private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
@@ -17,7 +18,7 @@ public class Drop implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.startsWith("drop");
+        return command.startsWith(DROP);
     }
 
     @Override
@@ -26,17 +27,17 @@ public class Drop implements Command {
         if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
             executeDrop(formatCommand[1]);
         } else {
-            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+            view.write(INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
     private void executeDrop(String tableName) {
         try {
             manager.drop(tableName);
-            view.write(String.format("Table %s was dropped. Enter next command or help:", tableName));
+            view.write(String.format(DROP_SUCCESSFUL, tableName));
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 }

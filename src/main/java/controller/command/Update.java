@@ -1,11 +1,12 @@
 package controller.command;
 
 import model.exception.DatabaseManagerException;
-import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 
 import java.util.*;
+
+import static controller.command.util.CommandMessages.*;
 
 public class Update implements Command {
     private static final int MIN_NUMBER_OF_PARAMETERS_IN_COMMAND = 6;
@@ -19,7 +20,7 @@ public class Update implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.startsWith("update");
+        return command.startsWith(UPDATE);
     }
 
     @Override
@@ -30,7 +31,18 @@ public class Update implements Command {
             executeUpdate(formatCommand[1], formatCommand[2], formatCommand[3],
                     namesToValuesOfUpdatableRow);
         } else {
-            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+            view.write(INCORRECT_FORMAT_ERR_MSG);
+        }
+    }
+
+    private void executeUpdate(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn,
+                               Map<String, String> namesToValuesOfUpdatableRow) {
+        try {
+            manager.update(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn, namesToValuesOfUpdatableRow);
+            new Find(this.view, this.manager).execute(String.format("%s|%s", FIND, tableName));
+        } catch (DatabaseManagerException e) {
+            view.write(e.getMessage());
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 
@@ -40,17 +52,6 @@ public class Update implements Command {
             namesToValuesOfUpdatableRow.put(formatCommand[i], formatCommand[i + 1]);
         }
         return namesToValuesOfUpdatableRow;
-    }
-
-    private void executeUpdate(String tableName, String nameOfVerifiableColumn, String valueOfVerifiableColumn,
-                               Map<String, String> namesToValuesOfUpdatableRow) {
-        try {
-            manager.update(tableName, nameOfVerifiableColumn, valueOfVerifiableColumn, namesToValuesOfUpdatableRow);
-            new Find(this.view, this.manager).execute("find|" + tableName);
-        } catch (DatabaseManagerException e) {
-            view.write(e.getMessage());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
-        }
     }
 
     private boolean isCorrectNumberOfParameters(String[] formatCommand) {

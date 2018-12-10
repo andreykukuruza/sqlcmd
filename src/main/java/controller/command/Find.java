@@ -1,13 +1,14 @@
 package controller.command;
 
 import model.exception.DatabaseManagerException;
-import controller.command.util.CommandMessages;
 import controller.command.util.TableFormatter;
 import model.DatabaseManager;
 import view.View;
 
 import java.util.List;
 import java.util.Set;
+
+import static controller.command.util.CommandMessages.*;
 
 public class Find implements Command {
     private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
@@ -21,7 +22,7 @@ public class Find implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.startsWith("find");
+        return command.startsWith(FIND);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class Find implements Command {
         if (formatCommand.length == CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND) {
             executeFind(formatCommand[1]);
         } else {
-            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+            view.write(INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
@@ -40,10 +41,10 @@ public class Find implements Command {
             List<String> tableData = manager.getTableData(tableName);
             TableFormatter table = new TableFormatter(columnNames, tableData);
             view.write(table.getTableString());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 }

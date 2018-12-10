@@ -2,6 +2,8 @@ package controller.command;
 
 import view.View;
 
+import static controller.command.util.CommandMessages.*;
+
 public class Unsupported implements Command {
     private View view;
 
@@ -16,6 +18,6 @@ public class Unsupported implements Command {
 
     @Override
     public void execute(String command) {
-        view.write("Wrong command! Please enter correct command or help:");
+        view.write(WRONG_COMMAND);
     }
 }

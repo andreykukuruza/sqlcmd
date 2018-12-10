@@ -1,12 +1,13 @@
 package controller.command;
 
 import model.exception.DatabaseManagerException;
-import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static controller.command.util.CommandMessages.*;
 
 public class Insert implements Command {
     private static final int MIN_NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
@@ -20,7 +21,7 @@ public class Insert implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.startsWith("insert");
+        return command.startsWith(INSERT);
     }
 
     @Override
@@ -30,18 +31,18 @@ public class Insert implements Command {
             Map<String, String> columnNameToColumnValue = getColumnNameToColumnValue(formatCommand);
             executeInsert(formatCommand[1], columnNameToColumnValue);
         } else {
-            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+            view.write(INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
     private void executeInsert(String tableName, Map<String, String> columnNameToColumnValue) {
         try {
             manager.insert(tableName, columnNameToColumnValue);
-            view.write("Data was successful insert in the table.");
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(INSERT_SUCCESSFUL);
+            view.write(ENTER_NEXT_COMMAND);
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 

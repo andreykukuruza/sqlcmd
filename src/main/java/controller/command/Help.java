@@ -1,12 +1,13 @@
 package controller.command;
 
-import controller.command.util.CommandMessages;
 import view.View;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import static controller.command.util.CommandMessages.*;
 
 public class Help implements Command {
     private View view;
@@ -17,18 +18,17 @@ public class Help implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.equals("help");
+        return command.equals(HELP);
     }
 
     @Override
     public void execute(String command) {
         try {
-            view.write(new String(Files.readAllBytes(Paths.get("src/main/resources/help.txt")),
-                    StandardCharsets.UTF_8));
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(new String(Files.readAllBytes(Paths.get(PATH_TO_HELP_FILE)), StandardCharsets.UTF_8));
+            view.write(ENTER_NEXT_COMMAND);
         } catch (IOException e) {
             view.write(e.getMessage());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 }

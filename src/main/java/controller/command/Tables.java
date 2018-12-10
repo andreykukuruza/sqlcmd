@@ -1,11 +1,12 @@
 package controller.command;
 
 import model.exception.DatabaseManagerException;
-import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
 
 import java.util.Set;
+
+import static controller.command.util.CommandMessages.*;
 
 public class Tables implements Command {
     private View view;
@@ -18,7 +19,7 @@ public class Tables implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.equals("tables");
+        return command.equals(TABLES);
     }
 
     @Override
@@ -28,17 +29,17 @@ public class Tables implements Command {
             writeTables(tableNames);
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 
     private void writeTables(Set<String> tableNames) {
         if (tableNames.size() == 0) {
-            view.write("No tables inside the database.");
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(EMPTY_DATABASE);
+            view.write(ENTER_NEXT_COMMAND);
         } else {
             view.write(tableNames.toString());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 }

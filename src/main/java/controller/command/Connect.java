@@ -1,9 +1,10 @@
 package controller.command;
 
 import model.exception.DatabaseManagerException;
-import controller.command.util.CommandMessages;
 import model.DatabaseManager;
 import view.View;
+
+import static controller.command.util.CommandMessages.*;
 
 public class Connect implements Command {
     private static final int NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
@@ -17,7 +18,7 @@ public class Connect implements Command {
 
     @Override
     public boolean canExecute(String command) {
-        return command.startsWith("connect");
+        return command.startsWith(CONNECT);
     }
 
     @Override
@@ -26,17 +27,17 @@ public class Connect implements Command {
         if (formatCommand.length == NUMBER_OF_PARAMETERS_IN_COMMAND) {
             executeConnect(formatCommand[1], formatCommand[2], formatCommand[3]);
         } else {
-            view.write(CommandMessages.INCORRECT_FORMAT_ERR_MSG);
+            view.write(INCORRECT_FORMAT_ERR_MSG);
         }
     }
 
     private void executeConnect(String databaseName, String username, String password) {
         try {
             manager.connect(databaseName, username, password);
-            view.write("Connect is successful. Enter next command or help:");
+            view.write(CONNECT_SUCCESSFUL);
         } catch (DatabaseManagerException e) {
             view.write(e.getMessage());
-            view.write(CommandMessages.ENTER_NEXT_COMMAND);
+            view.write(ENTER_NEXT_COMMAND);
         }
     }
 }
