@@ -68,14 +68,10 @@ class HelpTest {
                 "        \"column 1\" - name of the first column, \\\"value 1\\\" - value of the first column\n" +
                 "        \"column 2\" - name of the second column, \\\"value 2\\\" - value of the second column\n" +
                 "        \"column N\" - name of the N column, \\\"value N\\\" - value of the N column\n" +
-                "        P.S. If one or more of your values are text, you need to use special symbol '.\n" +
-                "        Example, insert|users|name|'some text'|password|'another text'\n" +
                 "\n" +
                 "    - update\n" +
                 "        You can use it for updating data in columns.\n" +
-                "        Format: update|table name|name of verifiable column|value of verifiable column|" +
-                "name of updatable column 1|value of updatable column 1|...|" +
-                "name of updatable column N|value of updatable column N\n" +
+                "        Format: update|table name|name of verifiable column|value of verifiable column|name of updatable column 1|value of updatable column 1|...|name of updatable column N|value of updatable column N\n" +
                 "\n" +
                 "    - delete\n" +
                 "        You can use it for deleting data in the table with parameters.\n" +
@@ -87,7 +83,10 @@ class HelpTest {
                 "\n" +
                 "    - exit\n" +
                 "        You can use it for correct exiting from SQLCmd.\n" +
-                "        Format: exit\n");
+                "        Format: exit\n" +
+                "\n" +
+                "    P.S. If one or more of your values are text, you need to use special symbol '.\n" +
+                "         Example, insert|users|name|'some text'|password|'another text'");
         verify(view, times(1)).write(CommandMessages.ENTER_NEXT_COMMAND);
     }
 }

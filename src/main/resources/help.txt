@@ -32,8 +32,6 @@ We have commands:
         "column 1" - name of the first column, \"value 1\" - value of the first column
         "column 2" - name of the second column, \"value 2\" - value of the second column
         "column N" - name of the N column, \"value N\" - value of the N column
-        P.S. If one or more of your values are text, you need to use special symbol '.
-        Example, insert|users|name|'some text'|password|'another text'
 
     - update
         You can use it for updating data in columns.
@@ -50,3 +48,6 @@ We have commands:
     - exit
         You can use it for correct exiting from SQLCmd.
         Format: exit
+
+    P.S. If one or more of your values are text, you need to use special symbol '.
+         Example, insert|users|name|'some text'|password|'another text'
