@@ -19,7 +19,6 @@ public class Controller {
         this.commands = new ArrayList<>(Arrays.asList(
                 new Connect(view, manager),
                 new Exit(view, manager),
-                new Help(view),
                 new IsConnected(view, manager),
                 new Tables(view, manager),
                 new Find(view, manager),
@@ -30,6 +29,7 @@ public class Controller {
                 new Update(view, manager),
                 new Clear(view, manager),
                 new Unsupported(view)));
+        commands.add(0, new Help(view, commands));
     }
 
     public void run() {
@@ -39,7 +39,7 @@ public class Controller {
             executeCommand(inputCommand);
             inputCommand = view.read();
         }
-        commands.get(1).execute(EXIT);
+        commands.get(2).execute(EXIT);
     }
 
     private void executeCommand(String inputCommand) {
