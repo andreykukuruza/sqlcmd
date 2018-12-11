@@ -33,12 +33,12 @@ public class Drop implements Command {
 
     @Override
     public String format() {
-        return "You can use it for deleting the table.";
+        return "Format: drop|table name";
     }
 
     @Override
     public String description() {
-        return "Format: drop|table name";
+        return "You can use it for deleting the table.";
     }
 
     private void executeDrop(String tableName) {

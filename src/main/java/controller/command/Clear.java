@@ -18,7 +18,7 @@ public class Clear implements Command {
 
     @Override
     public String format() {
-        return "clear|table name";
+        return "Format: clear|table name";
     }
 
     @Override
