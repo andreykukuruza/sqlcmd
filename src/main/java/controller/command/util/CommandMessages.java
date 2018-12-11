@@ -25,12 +25,10 @@ public class CommandMessages {
     public static final String TABLES = "tables";
     public static final String EMPTY_DATABASE = "No tables inside the database.";
 
-    public static final String HELP = "help";
-    public static final String PATH_TO_HELP_FILE = "src/main/resources/help.txt";
-
     public static final String EXIT = "exit";
     public static final String GOODBYE = "Goodbye!";
 
+    public static final String HELP = "help";
     public static final String DELETE = "delete";
     public static final String FIND = "find";
     public static final String UPDATE = "update";

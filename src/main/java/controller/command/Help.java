@@ -38,7 +38,7 @@ public class Help implements Command {
     public void execute(String command) {
         view.write("We have commands:");
         for (Command c : userCommands) {
-            view.write("- " + c.getClass().getSimpleName().toLowerCase());
+            view.write(String.format("- %s", c.getClass().getSimpleName().toLowerCase()));
             view.write(c.description());
             view.write(c.format());
             view.write("");
