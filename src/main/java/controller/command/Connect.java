@@ -17,6 +17,16 @@ public class Connect implements Command {
     }
 
     @Override
+    public String format() {
+        return "Format: connect|database name|username|password";
+    }
+
+    @Override
+    public String description() {
+        return "You can use it for connection to database.";
+    }
+
+    @Override
     public boolean canExecute(String command) {
         return command.startsWith(CONNECT);
     }

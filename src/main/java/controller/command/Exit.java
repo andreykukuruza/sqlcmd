@@ -16,6 +16,16 @@ public class Exit implements Command {
     }
 
     @Override
+    public String format() {
+        return "Format: exit";
+    }
+
+    @Override
+    public String description() {
+        return "You can use it for correct exiting from SQLCmd.";
+    }
+
+    @Override
     public boolean canExecute(String command) {
         return command.equals(EXIT);
     }

@@ -19,6 +19,18 @@ public class Update implements Command {
     }
 
     @Override
+    public String format() {
+        return "Format: update|table name|name of verifiable column|value of verifiable column|" +
+                "name of updatable column 1|value of updatable column 1|...|" +
+                "name of updatable column N|value of updatable column N";
+    }
+
+    @Override
+    public String description() {
+        return "You can use it for updating data in columns.";
+    }
+
+    @Override
     public boolean canExecute(String command) {
         return command.startsWith(UPDATE);
     }

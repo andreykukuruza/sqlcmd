@@ -31,6 +31,16 @@ public class Drop implements Command {
         }
     }
 
+    @Override
+    public String format() {
+        return "You can use it for deleting the table.";
+    }
+
+    @Override
+    public String description() {
+        return "Format: drop|table name";
+    }
+
     private void executeDrop(String tableName) {
         try {
             manager.drop(tableName);

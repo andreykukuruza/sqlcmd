@@ -17,6 +17,16 @@ public class Clear implements Command {
     }
 
     @Override
+    public String format() {
+        return "clear|table name";
+    }
+
+    @Override
+    public String description() {
+        return "You can use it for clearing all data in the table.";
+    }
+
+    @Override
     public boolean canExecute(String command) {
         return command.startsWith(CLEAR);
     }

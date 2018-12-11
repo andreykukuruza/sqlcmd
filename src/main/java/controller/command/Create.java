@@ -20,6 +20,19 @@ public class Create implements Command {
     }
 
     @Override
+    public String format() {
+        return "Format: create|table Name|column 1|type 1|column 2|type 2|...|column N|type N\n" +
+                "\ttable Name - name of new table.\n" +
+                "\tcolumn 1|column 2|...|column N - names of columns in new table.\n" +
+                "\ttype 1|type 2|...|type N - data types of columns in new table.";
+    }
+
+    @Override
+    public String description() {
+        return "You can use it for creating the table with any number of columns.";
+    }
+
+    @Override
     public boolean canExecute(String command) {
         return command.startsWith(CREATE);
     }

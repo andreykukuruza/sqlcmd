@@ -12,6 +12,16 @@ public class Unsupported implements Command {
     }
 
     @Override
+    public String format() {
+        throw new UnsupportedOperationException("Unsupported is inner helper command without format");
+    }
+
+    @Override
+    public String description() {
+        throw new UnsupportedOperationException("Unsupported is inner helper command without description");
+    }
+
+    @Override
     public boolean canExecute(String command) {
         return true;
     }

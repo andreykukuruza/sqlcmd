@@ -21,6 +21,16 @@ public class Find implements Command {
     }
 
     @Override
+    public String format() {
+        return "Format: find|table name";
+    }
+
+    @Override
+    public String description() {
+        return "You can use it for watching data in the table.";
+    }
+
+    @Override
     public boolean canExecute(String command) {
         return command.startsWith(FIND);
     }

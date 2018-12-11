@@ -17,6 +17,16 @@ public class Help implements Command {
     }
 
     @Override
+    public String format() {
+        return "Format: help";
+    }
+
+    @Override
+    public String description() {
+        return "You can use it for watching all commands and their describes in SQLCmd.";
+    }
+
+    @Override
     public boolean canExecute(String command) {
         return command.equals(HELP);
     }

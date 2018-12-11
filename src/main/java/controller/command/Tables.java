@@ -18,6 +18,16 @@ public class Tables implements Command {
     }
 
     @Override
+    public String format() {
+        return "Format: tables";
+    }
+
+    @Override
+    public String description() {
+        return "You can use it for watching all tables in database.";
+    }
+
+    @Override
     public boolean canExecute(String command) {
         return command.equals(TABLES);
     }

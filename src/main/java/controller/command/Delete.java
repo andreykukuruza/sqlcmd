@@ -17,6 +17,16 @@ public class Delete implements Command {
     }
 
     @Override
+    public String format() {
+        return "Format: delete|table name|name of verifiable column|value of verifiable column";
+    }
+
+    @Override
+    public String description() {
+        return "You can use it for deleting data in the table with parameters.";
+    }
+
+    @Override
     public boolean canExecute(String command) {
         return command.startsWith(DELETE);
     }
