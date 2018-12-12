@@ -13,6 +13,7 @@ import static controller.command.util.CommandMessages.*;
 public class Controller {
     private View view;
     private List<Command> commands;
+    private static final int EXIT_INDEX = 2;
 
     public Controller(View view, DatabaseManager manager) {
         this.view = view;
@@ -39,7 +40,7 @@ public class Controller {
             executeCommand(inputCommand);
             inputCommand = view.read();
         }
-        commands.get(2).execute(EXIT);
+        commands.get(EXIT_INDEX).execute(EXIT);
     }
 
     private void executeCommand(String inputCommand) {
