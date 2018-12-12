@@ -6,7 +6,7 @@ import view.View;
 
 import static controller.command.util.CommandMessages.*;
 
-public class Drop implements Command {
+public class Drop extends UserCommand {
     private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
     private View view;
     private DatabaseManager manager;
@@ -29,16 +29,6 @@ public class Drop implements Command {
         } else {
             view.write(INCORRECT_FORMAT_ERR_MSG);
         }
-    }
-
-    @Override
-    public String format() {
-        return "Format: drop|table name";
-    }
-
-    @Override
-    public String description() {
-        return "You can use it for deleting the table.";
     }
 
     private void executeDrop(String tableName) {

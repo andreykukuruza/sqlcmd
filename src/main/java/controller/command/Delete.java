@@ -6,7 +6,7 @@ import view.View;
 
 import static controller.command.util.CommandMessages.*;
 
-public class Delete implements Command {
+public class Delete extends UserCommand {
     private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
     private View view;
     private DatabaseManager manager;
@@ -14,16 +14,6 @@ public class Delete implements Command {
     public Delete(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
-    }
-
-    @Override
-    public String format() {
-        return "Format: delete|table name|name of verifiable column|value of verifiable column";
-    }
-
-    @Override
-    public String description() {
-        return "You can use it for deleting data in the table with parameters.";
     }
 
     @Override

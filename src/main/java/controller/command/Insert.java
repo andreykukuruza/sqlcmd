@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static controller.command.util.CommandMessages.*;
 
-public class Insert implements Command {
+public class Insert extends UserCommand {
     private static final int MIN_NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
     private final View view;
     private final DatabaseManager manager;
@@ -17,22 +17,6 @@ public class Insert implements Command {
     public Insert(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
-    }
-
-    @Override
-    public String format() {
-        return "Format: insert|table name|column 1|value 1|column 2|value 2|...|column N|value N\n" +
-                "\tcolumn 1 - name of the first column\n" +
-                "\tvalue 1 - value of the first column\n" +
-                "\tcolumn 2 - name of the second column\n" +
-                "\tvalue 2 - value of the second column\n" +
-                "\tcolumn N - name of the N column\n" +
-                "\tvalue N - value of the N column";
-    }
-
-    @Override
-    public String description() {
-        return "You can use it for inserting the row in the table.";
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.*;
 
 import static controller.command.util.CommandMessages.*;
 
-public class Update implements Command {
+public class Update extends UserCommand {
     private static final int MIN_NUMBER_OF_PARAMETERS_IN_COMMAND = 6;
     private final View view;
     private final DatabaseManager manager;
@@ -16,18 +16,6 @@ public class Update implements Command {
     public Update(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
-    }
-
-    @Override
-    public String format() {
-        return "Format: update|table name|name of verifiable column|value of verifiable column|" +
-                "name of updatable column 1|value of updatable column 1|...|" +
-                "name of updatable column N|value of updatable column N";
-    }
-
-    @Override
-    public String description() {
-        return "You can use it for updating data in columns.";
     }
 
     @Override

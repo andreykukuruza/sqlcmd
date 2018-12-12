@@ -6,7 +6,7 @@ import view.View;
 
 import static controller.command.util.CommandMessages.*;
 
-public class Connect implements Command {
+public class Connect extends UserCommand {
     private static final int NUMBER_OF_PARAMETERS_IN_COMMAND = 4;
     private View view;
     private DatabaseManager manager;
@@ -14,16 +14,6 @@ public class Connect implements Command {
     public Connect(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
-    }
-
-    @Override
-    public String format() {
-        return "Format: connect|database name|username|password";
-    }
-
-    @Override
-    public String description() {
-        return "You can use it for connection to database.";
     }
 
     @Override

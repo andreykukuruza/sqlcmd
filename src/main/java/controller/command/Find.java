@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static controller.command.util.CommandMessages.*;
 
-public class Find implements Command {
+public class Find extends UserCommand {
     private static final int CORRECT_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
     private View view;
     private DatabaseManager manager;
@@ -18,16 +18,6 @@ public class Find implements Command {
     public Find(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
-    }
-
-    @Override
-    public String format() {
-        return "Format: find|table name";
-    }
-
-    @Override
-    public String description() {
-        return "You can use it for watching data in the table.";
     }
 
     @Override

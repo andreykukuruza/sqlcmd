@@ -8,23 +8,13 @@ import java.util.Set;
 
 import static controller.command.util.CommandMessages.*;
 
-public class Tables implements Command {
+public class Tables extends UserCommand {
     private View view;
     private DatabaseManager manager;
 
     public Tables(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
-    }
-
-    @Override
-    public String format() {
-        return "Format: tables";
-    }
-
-    @Override
-    public String description() {
-        return "You can use it for watching all tables in database.";
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static controller.command.util.CommandMessages.*;
 
-public class Create implements Command {
+public class Create extends UserCommand {
     private static final int MIN_NUMBER_OF_PARAMETERS_IN_COMMAND = 2;
     private View view;
     private DatabaseManager manager;
@@ -17,19 +17,6 @@ public class Create implements Command {
     public Create(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
-    }
-
-    @Override
-    public String format() {
-        return "Format: create|table Name|column 1|type 1|column 2|type 2|...|column N|type N\n" +
-                "\ttable Name - name of new table.\n" +
-                "\tcolumn 1|column 2|...|column N - names of columns in new table.\n" +
-                "\ttype 1|type 2|...|type N - data types of columns in new table.";
-    }
-
-    @Override
-    public String description() {
-        return "You can use it for creating the table with any number of columns.";
     }
 
     @Override

@@ -6,23 +6,13 @@ import view.View;
 
 import static controller.command.util.CommandMessages.*;
 
-public class Exit implements Command {
+public class Exit extends UserCommand {
     private View view;
     private DatabaseManager manager;
 
     public Exit(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
-    }
-
-    @Override
-    public String format() {
-        return "Format: exit";
-    }
-
-    @Override
-    public String description() {
-        return "You can use it for correct exiting from SQLCmd.";
     }
 
     @Override
