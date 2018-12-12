@@ -8,8 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import view.View;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,5 +44,23 @@ class IsConnectedTest {
 //        then
         verify(view)
                 .write("You can't use this command before connect to database. Enter next command or help:");
+    }
+
+    @Test
+    void formatTest() {
+//        when
+        UnsupportedOperationException e = assertThrows(UnsupportedOperationException.class,
+                () -> isConnected.format());
+//        then
+        assertEquals("IsConnected is inner helper command without format and description", e.getMessage());
+    }
+
+    @Test
+    void descriptionTest() {
+//        when
+        UnsupportedOperationException e = assertThrows(UnsupportedOperationException.class,
+                () -> isConnected.description());
+//        then
+        assertEquals("IsConnected is inner helper command without format and description", e.getMessage());
     }
 }
