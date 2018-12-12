@@ -6,7 +6,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class PostgresDatabaseManagerConnectionTest {
@@ -23,7 +22,7 @@ class PostgresDatabaseManagerConnectionTest {
     }
 
     @Test
-    void connectWithAllWrongParametersTest() {
+    void connectTest_WithAllWrongParameters() {
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.connect(
                 "WrongDatabaseName",
                 "WrongUserName",
@@ -32,7 +31,7 @@ class PostgresDatabaseManagerConnectionTest {
     }
 
     @Test
-    void connectWithWrongPasswordTest() {
+    void connectTest_WithWrongPassword() {
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.connect(
                 Config.getDatabaseName(),
                 Config.getUserName(),
@@ -41,7 +40,7 @@ class PostgresDatabaseManagerConnectionTest {
     }
 
     @Test
-    void connectWithWrongUserNameTest() {
+    void connectTest_WithWrongUserName() {
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.connect(
                 Config.getDatabaseName(),
                 "WrongUserName",
@@ -50,7 +49,7 @@ class PostgresDatabaseManagerConnectionTest {
     }
 
     @Test
-    void connectWithWrongDatabaseNameTest() {
+    void connectTest_WithWrongDatabaseName() {
         DatabaseManagerException e = assertThrows(DatabaseManagerException.class, () -> manager.connect(
                 "WrongDatabaseName",
                 Config.getUserName(),
@@ -59,7 +58,7 @@ class PostgresDatabaseManagerConnectionTest {
     }
 
     @Test
-    void connectWithCorrectParametersTest() {
+    void connectTest_WithCorrectParameters() {
         try {
             manager.connect(
                     Config.getDatabaseName(),
@@ -71,7 +70,7 @@ class PostgresDatabaseManagerConnectionTest {
     }
 
     @Test
-    void connectAfterConnectTest() {
+    void connectTest_AfterConnect() {
         assertFalse(manager.isConnected());
         try {
             manager.connect(
