@@ -4,7 +4,8 @@ public class CommandMessages {
     public static final String INCORRECT_FORMAT_ERR_MSG = "Incorrect command format. Try again or enter help:";
     public static final String ENTER_NEXT_COMMAND = "Enter next command or help:";
     public static final String WRONG_COMMAND = "Wrong command! Please enter correct command or help:";
-    public static final String UNSUPPORTED_OPERATION_ERR_MSG = "%s is inner helper command without format";
+    public static final String UNSUPPORTED_OPERATION_ERR_MSG = "%s is inner helper command without" +
+            " format and description";
     public static final String NEED_CONNECT = "You can't use this command before connect to database." +
             " Enter next command or help:";
 
@@ -33,7 +34,7 @@ public class CommandMessages {
     public static final String HELP_TITLE = "We have commands:";
     public static final String HELP_ADDITIONAL_INFO =
             "P.S. If one or more of your values are text, you need to use special symbol: '\n" +
-            "Example, insert|users|name|'some text'|password|'another text'";
+                    "Example, insert|users|name|'some text'|password|'another text'";
 
 
     public static final String DELETE = "delete";
