@@ -5,23 +5,13 @@ import view.View;
 
 import static controller.command.util.CommandMessages.*;
 
-public class IsConnected implements Command {
+public class IsConnected extends SystemCommand {
     private View view;
     private DatabaseManager manager;
 
     public IsConnected(View view, DatabaseManager manager) {
         this.view = view;
         this.manager = manager;
-    }
-
-    @Override
-    public String format() {
-        throw new UnsupportedOperationException("IsConnected is inner helper command without format");
-    }
-
-    @Override
-    public String description() {
-        throw new UnsupportedOperationException("IsConnected is inner helper command without description");
     }
 
     @Override

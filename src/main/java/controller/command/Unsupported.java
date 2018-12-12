@@ -4,21 +4,11 @@ import view.View;
 
 import static controller.command.util.CommandMessages.*;
 
-public class Unsupported implements Command {
+public class Unsupported extends SystemCommand {
     private View view;
 
     public Unsupported(View view) {
         this.view = view;
-    }
-
-    @Override
-    public String format() {
-        throw new UnsupportedOperationException("Unsupported is inner helper command without format");
-    }
-
-    @Override
-    public String description() {
-        throw new UnsupportedOperationException("Unsupported is inner helper command without description");
     }
 
     @Override
