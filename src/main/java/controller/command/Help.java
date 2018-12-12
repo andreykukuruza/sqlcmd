@@ -14,7 +14,7 @@ public class Help extends UserCommand {
     public Help(View view, List<Command> allCommands) {
         this.view = view;
         userCommands = allCommands.stream()
-                .filter(this::isUserCommand)
+                .filter(c -> c instanceof UserCommand)
                 .collect(Collectors.toList());
         userCommands.add(this);
     }
@@ -35,14 +35,5 @@ public class Help extends UserCommand {
         }
         view.write(HELP_ADDITIONAL_INFO);
         view.write(ENTER_NEXT_COMMAND);
-    }
-
-    private boolean isUserCommand(Command c) {
-        try {
-            c.format();
-            return true;
-        } catch (UnsupportedOperationException e) {
-            return false;
-        }
     }
 }
